@@ -88,7 +88,7 @@ bool PersonArray_t::is_empty() const
 	return num_of_elements == 0;
 }
 
-void  PersonArray_t::insert( Person_t *person)
+void  PersonArray_t::insert(const Person_t *person)
 {  
 	append(num_of_elements - 1, person);
 }

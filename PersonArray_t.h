@@ -9,7 +9,7 @@ class PersonArray_t
 		explicit PersonArray_t(const size_t capacity);  //explicit to prevent PersonArray_t a = 2 for instance.
 		size_t get_num_of_elements() const;
 		size_t get_capacity() const;
-		void insert(Person_t *person); //inserts a person_t * item to the array. Will expand the array with expand value if no place */
+		void insert(const Person_t *person); //inserts a person_t * item to the array. Will expand the array with expand value if no place */
 		Person_t *get_first_element() const; // returns NULL if array is empty
 		Person_t * get_last_element() const; // returns NULL if array is empty
 		Person_t * find(const Person_t &person) const; //find element with specific value. Returns NULL if no element found.
