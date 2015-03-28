@@ -21,6 +21,7 @@ class PersonArray_t
 		int prepend(int index,const Person_t *person); //add a new element before specific index in array
 		bool is_empty() const; //returns True iff the array is empty. False otherwise
 		void print_array() const;
+		Person_t* get_element(int index) const; //get element by a given index
 
 	private:
 		const Person_t **array_pointer; // pointer to the array of Person_t *

@@ -1,4 +1,3 @@
-//shlomi the king
 #include "PersonArray_t.h"
 
 using namespace std;
@@ -61,7 +60,7 @@ static int get_index()
 
 int main() {
 	PersonArray_t arr;
-	Person_t *ip;
+	Person_t *ip = NULL;
 	Person_t value("example",3);
 	int index;
 	char c;
@@ -74,7 +73,8 @@ int main() {
 			<< "Press c to see the capacity" << endl
 			<< "press f to get the first element in array" << endl
 			<< "press l to get the last element in array" << endl
-			<< "Press b to find an element in array" << endl
+			<< "Press b to find an element in array by value" << endl
+			<< "Press x to find an element in array by index" << endl
 			<< "Press e to see if array is empty" << endl
 			<< "Press i to insert new person at the and of array" << endl
 			<< "Press r to remove a person from array" << endl
@@ -113,11 +113,21 @@ int main() {
 			else
 				cout << "element was not found" << endl;
 			break;
+		case 'x': index = get_index();
+			ip = arr.get_element(index);
+			if (ip == NULL)
+			{
+				cout << "Invalid index" << endl;
+				cont = false;
+			}
+			else
+				cout << *ip << endl;
+			break;
 		case 'e':  cout << (arr.is_empty() ? "Empty" : "Not empty") << endl;
 			break;
 		case 'i':  ip = getPtr();
 			if (!ip)
-				return -1;
+				cont = false;
 			arr.insert(ip);
 			break;
 		case 'r':  value = getValue();
@@ -132,14 +142,14 @@ int main() {
 			break;
 		case 'a':  ip = getPtr();
 			if (!ip)
-				return -1;
+				cont = false;
 			index = get_index();
 			if (!arr.append(index, ip))
 				cout << "some error has occured. Please make sure you entered correct params" << endl;
 			break;
 		case 'p':  ip = getPtr();
 			if (!ip)
-				return -1;
+				cont = false;
 			index = get_index();
 			if (!arr.prepend(index, ip))
 				cout << "some error has occured .Please make sure you entered correct params" << endl;

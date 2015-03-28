@@ -194,7 +194,8 @@ void PersonArray_t::expand_capacity()
 		temp[i] = array_pointer[i];
 	}
 	//liran - no need to call the delete of persons right? they are in use...
-	delete[] array_pointer;
+	//noooooooooooooooooooooo
+	//delete[] array_pointer;
 	array_pointer = temp;
 	capacity += expand_value;
 }
@@ -229,7 +230,7 @@ int PersonArray_t::append(int index,const Person_t *person)
 
 int PersonArray_t::prepend(int index,const Person_t *person)
 {
-	if (index - 1 < 0) //shlomi fixed
+	if (index - 1 < 0) 
 		return 0;
 	 return append(index -2, person);
 }
@@ -241,4 +242,11 @@ void PersonArray_t::print_array() const
 	{
 		cout << *array_pointer[i] << endl;
 	}
+}
+
+Person_t* PersonArray_t::get_element(int index) const
+{
+	if (index < 0 || (size_t)index >= num_of_elements) //error in index
+		return NULL;
+	return (Person_t*)array_pointer[index];
 }
