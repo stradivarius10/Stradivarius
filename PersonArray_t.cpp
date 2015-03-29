@@ -90,7 +90,7 @@ bool PersonArray_t::is_empty() const
 
 void  PersonArray_t::insert(const Person_t *person)
 {  
-	append(num_of_elements - 1, person);
+	insert_at_index(num_of_elements, person);
 }
 
 Person_t * PersonArray_t::get_first_element() const
@@ -200,39 +200,23 @@ void PersonArray_t::expand_capacity()
 	capacity += expand_value;
 }
 
-int PersonArray_t::append(int index,const Person_t *person)
+int PersonArray_t::append(size_t index,const Person_t *person)
 {
 	if (index >= (int)num_of_elements || index<-1)
 		return 0;
 
-	/* no place*/
-	if (num_of_elements == capacity)
-	{
-		expand_capacity();
-	}
-	
-
-	num_of_elements++;
-
-	/* move the elements to the right in order to accumulate the new item*/
-	for (size_t i = index + 1; i < num_of_elements; i++)
-	{
-		array_pointer[i+1] = array_pointer[i];
-
-	}
-
-	array_pointer[index + 1] = person;
-
+	insert_at_index(index + 1, person);
 	return 1;
 
 }
 
 
-int PersonArray_t::prepend(int index,const Person_t *person)
+int PersonArray_t::prepend(size_t index,const Person_t *person)
 {
 	if (index - 1 < 0) 
 		return 0;
-	 return append(index -2, person);
+	insert_at_index(index -1, person);
+	return 1;
 }
 
 
@@ -244,9 +228,32 @@ void PersonArray_t::print_array() const
 	}
 }
 
-Person_t* PersonArray_t::get_element(int index) const
+Person_t* PersonArray_t::get_element(size_t index) const
 {
-	if (index < 0 || (size_t)index >= num_of_elements) //error in index
+	if (index >= num_of_elements) //error in index
 		return NULL;
 	return (Person_t*)array_pointer[index];
+}
+
+
+void PersonArray_t::insert_at_index(size_t index, const Person_t *person)
+{
+
+	/* no place*/
+	if (num_of_elements == capacity)
+	{
+		expand_capacity();
+	}
+
+	num_of_elements++;
+
+	/* move the elements to the right in order to accumulate the new item*/
+	for (size_t i = index ; i < num_of_elements; i++)
+	{
+		array_pointer[i + 1] = array_pointer[i];
+
+	}
+
+	array_pointer[index ] = person;
+
 }

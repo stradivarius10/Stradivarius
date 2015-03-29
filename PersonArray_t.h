@@ -17,11 +17,11 @@ class PersonArray_t
 		void remove_delete(const Person_t &person); //if more than one element has the same value, then to remove all of them	
 		void remove_all(); //all elements ( without deleting them , empty array)
 		void remove_delete_all(); 
-		int append(int index, const Person_t *person); //add a new element after  index in array	
-		int prepend(int index,const Person_t *person); //add a new element before specific index in array
+		int append(size_t index, const Person_t *person); //add a new element after  index in array	
+		int prepend(size_t index,const Person_t *person); //add a new element before specific index in array
 		bool is_empty() const; //returns True iff the array is empty. False otherwise
 		void print_array() const;
-		Person_t* get_element(int index) const; //get element by a given index
+		Person_t* get_element(size_t index) const; //get element by a given index
 
 	private:
 		const Person_t **array_pointer; // pointer to the array of Person_t *
@@ -37,5 +37,5 @@ class PersonArray_t
 		//auxilliary functions
 		void expand_capacity(); //expand the capacity by expan_value
 		void shift_left(int index); // will shift all the items to the left form index towarads num_of_elements.
-		
+		void insert_at_index(size_t index, const Person_t *person); //will insert an item at index, and will shift right all items on the right
 };
