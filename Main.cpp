@@ -5,32 +5,21 @@ using namespace std;
 //====================================================
 
 static Person_t getValue() {
-	//shachar change
-	//Person_t i;
 	string name;
 	int age;
 	cout << "\nEnter the name of the person:" << endl;
 	cin >> name;
 	cout << "\nEnter the age of person: (Age has to be in 0-120 range)" << endl;
 	cin >> age;
-	Person_t i(name, age);
-//	cin >> i;
-	return i;
+	Person_t value(name, age);
+	return value;
 }
 
 //====================================================
 
 static Person_t* getPtr() {
-	/*
-	Person_t* ip = new Person_t;
-	cout << "\nEnter name and age of person:" << endl;
-	cin >> *ip;
-	return ip;
-	*/
 	string name;
 	int age;
-	//cout << "\nEnter name and age of person:" << endl;
-	//cin >> name >> age;
 	cout << "\nEnter the name of the person:" << endl;
 	cin >> name;
 	cout << "\nEnter the age of person: (Age has to be in 0-120 range)" << endl;
@@ -42,7 +31,6 @@ static Person_t* getPtr() {
 		return NULL;
 	}
 	Person_t* ip = new Person_t(name, age);
-	//	cin >> i;
 	return ip;
 }
 

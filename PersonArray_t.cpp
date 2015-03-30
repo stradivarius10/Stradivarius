@@ -1,7 +1,7 @@
 #include "PersonArray_t.h"
 
 /* initiazling the static data member */
-const size_t PersonArray_t::m_expand_value = 16;
+const size_t PersonArray_t::m_expand_value = 4;
 
 
 PersonArray_t::PersonArray_t() : m_num_of_elements(0), m_capacity(m_expand_value)
@@ -105,9 +105,8 @@ void PersonArray_t::shift_left(int index)
 
 void PersonArray_t::remove_delete(const Person_t &person)
 { 
-	size_t i = 0;
 	/*finding the index of the element*/
-	for (; i < m_num_of_elements; i++)
+	for (size_t i = 0; i < m_num_of_elements; i++)
 	{
 		if (person == *m_array_pointer[i])
 		{
@@ -124,6 +123,7 @@ void PersonArray_t::remove_all()
 {
 	m_num_of_elements = 0; // in this case the array is empty though items may be exists but will be treated as none exited.
 }
+
 void PersonArray_t::remove_delete_all()
 {
 	for (size_t i = 0; i < m_num_of_elements; i++)
@@ -158,7 +158,7 @@ int PersonArray_t::append(const size_t index,const Person_t *person)
 
 int PersonArray_t::prepend(const size_t index,const Person_t *person)
 {
-	if (index - 1 < 0) 
+	if (index == 0 || index > m_num_of_elements) 
 		return 0;
 	insert_at_index(index -1, person);
 	return 1;
@@ -190,15 +190,15 @@ void PersonArray_t::insert_at_index(const size_t index, const Person_t *person)
 		expand_capacity();
 	}
 
-	m_num_of_elements++;
-
 	/* move the elements to the right in order to accumulate the new item*/
-	for (size_t i = index; i < m_num_of_elements; i++)
+	for (size_t i = m_num_of_elements; i > index; i--)
 	{
-		m_array_pointer[i + 1] = m_array_pointer[i];
+		m_array_pointer[i] = m_array_pointer[i - 1];
 
 	}
 
 	m_array_pointer[index] = person;
+
+	m_num_of_elements++;
 
 }
