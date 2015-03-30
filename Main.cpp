@@ -2,23 +2,38 @@
 
 using namespace std;
 
-#define INVALID_AGE (121)
-
-
 //====================================================
 
 static Person_t* getPtr() {
 	string name;
+	string tmp;
+	bool success = false;
 	int age;
 	cout << "\nEnter the name of the person:" << endl;
 	cin >> name;
 	cout << "\nEnter the age of person: (Age has to be in 0-120 range)" << endl;
 	cin >> age;
-	if (age > 120 || age < 0)
-	{
-		cout << "Age has to be in 0-120 range. Exiting" << endl;
-		cin.clear();
-		return NULL;
+	//	checking age
+	while (!success)
+	{ 
+		while (cin.fail())
+		{
+			cout << "Age has to be in 0-120 range. Please try again:" << endl;
+			cin.clear();
+			cin >> tmp; //remove all the word and try again
+			cin >> age;
+		}
+		if (age > 120 ||age < 0)
+		{
+			cout << "Age has to be in 0-120 range. Please try again:" << endl;
+			success = false;
+			cin >> age;
+		}
+		else
+		{
+			success = true;
+		}
+		
 	}
 	Person_t* ip = new Person_t(name, age);
 	return ip;
@@ -28,15 +43,34 @@ static Person_t* getPtr() {
 
 static Person_t getValue() {
 	string name;
+	string tmp;
+	bool success = false;
 	int age;
 	cout << "\nEnter the name of the person:" << endl;
 	cin >> name;
 	cout << "\nEnter the age of person: (Age has to be in 0-120 range)" << endl;
 	cin >> age;
-	if (age > 120 || age < 0)
+	//	checking age
+	while (!success)
 	{
-		cout << "Age has to be in 0-120 range. Exiting" << endl;
-		return Person_t(name, INVALID_AGE); //returning an invalid person so exit will take place (exceptions has not been taught yet).
+		while (cin.fail())
+		{
+			cout << "Age has to be in 0-120 range. Please try again:" << endl;
+			cin.clear();
+			cin >> tmp; //remove all the word and try again
+			cin >> age;
+		}
+		if (age > 120 || age < 0)
+		{
+			cout << "Age has to be in 0-120 range. Please try again:" << endl;
+			success = false;
+			cin >> age;
+		}
+		else
+		{
+			success = true;
+		}
+
 	}
 	Person_t value(name, age);
 	return value;
@@ -103,11 +137,6 @@ int main() {
 				cout << *arr.get_last_element() << endl;
 			break;
 		case 'b': value = getValue();
-			if (value.get_age() == INVALID_AGE)
-			{
-				cont = false;
-				break;
-			}
 
 			ip = arr.find(value);
 			
@@ -129,42 +158,24 @@ int main() {
 		case 'e':  cout << (arr.is_empty() ? "Empty" : "Not empty") << endl;
 			break;
 		case 'i':  ip = getPtr();
-			if (!ip)
-				cont = false;
 			arr.insert(ip);
 			break;
 		case 'r':  value = getValue();
-			if (value.get_age() == INVALID_AGE)
-			{
-				cont = false;
-				break;
-			}
-
 			arr.remove(value);
 			break;
 		case 'R':  arr.remove_all();
 			break;
 		case 'd': value = getValue();
-			if (value.get_age() == INVALID_AGE)
-			{
-				cont = false;
-				break;
-			}
-			
 			arr.remove_delete(value);
 			break;
 		case 'D': arr.remove_delete_all();
 			break;
 		case 'a':  ip = getPtr();
-			if (!ip)
-				cont = false;
 			index = get_index();
 			if (!arr.append(index, ip))
 				cout << "some error has occured. Please make sure you entered correct params" << endl;
 			break;
 		case 'p':  ip = getPtr();
-			if (!ip)
-				cont = false;
 			index = get_index();
 			if (!arr.prepend(index, ip))
 				cout << "some error has occured .Please make sure you entered correct params" << endl;
