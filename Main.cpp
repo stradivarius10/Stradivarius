@@ -2,18 +2,8 @@
 
 using namespace std;
 
-//====================================================
+#define INVALID_AGE (121)
 
-static Person_t getValue() {
-	string name;
-	int age;
-	cout << "\nEnter the name of the person:" << endl;
-	cin >> name;
-	cout << "\nEnter the age of person: (Age has to be in 0-120 range)" << endl;
-	cin >> age;
-	Person_t value(name, age);
-	return value;
-}
 
 //====================================================
 
@@ -23,7 +13,7 @@ static Person_t* getPtr() {
 	cout << "\nEnter the name of the person:" << endl;
 	cin >> name;
 	cout << "\nEnter the age of person: (Age has to be in 0-120 range)" << endl;
-	cin >>  age;
+	cin >> age;
 	if (age > 120 || age < 0)
 	{
 		cout << "Age has to be in 0-120 range. Exiting" << endl;
@@ -32,6 +22,24 @@ static Person_t* getPtr() {
 	}
 	Person_t* ip = new Person_t(name, age);
 	return ip;
+}
+
+//====================================================
+
+static Person_t getValue() {
+	string name;
+	int age;
+	cout << "\nEnter the name of the person:" << endl;
+	cin >> name;
+	cout << "\nEnter the age of person: (Age has to be in 0-120 range)" << endl;
+	cin >> age;
+	if (age > 120 || age < 0)
+	{
+		cout << "Age has to be in 0-120 range. Exiting" << endl;
+		return Person_t(name, INVALID_AGE); //returning an invalid person so exit will take place (exceptions has not been taught yet).
+	}
+	Person_t value(name, age);
+	return value;
 }
 
 //====================================================
@@ -95,7 +103,14 @@ int main() {
 				cout << *arr.get_last_element() << endl;
 			break;
 		case 'b': value = getValue();
+			if (value.get_age() == INVALID_AGE)
+			{
+				cont = false;
+				break;
+			}
+
 			ip = arr.find(value);
+			
 			if (ip != NULL)
 				cout << "element was found:" << endl << *ip << endl;
 			else
@@ -119,11 +134,23 @@ int main() {
 			arr.insert(ip);
 			break;
 		case 'r':  value = getValue();
+			if (value.get_age() == INVALID_AGE)
+			{
+				cont = false;
+				break;
+			}
+
 			arr.remove(value);
 			break;
 		case 'R':  arr.remove_all();
 			break;
 		case 'd': value = getValue();
+			if (value.get_age() == INVALID_AGE)
+			{
+				cont = false;
+				break;
+			}
+			
 			arr.remove_delete(value);
 			break;
 		case 'D': arr.remove_delete_all();
