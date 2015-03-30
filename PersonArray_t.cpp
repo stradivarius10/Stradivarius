@@ -1,7 +1,7 @@
 #include "PersonArray_t.h"
 
 /* initiazling the static data member */
-const size_t PersonArray_t::m_expand_value = 4;
+const size_t PersonArray_t::m_expand_value = 16;
 
 
 PersonArray_t::PersonArray_t() : m_num_of_elements(0), m_capacity(m_expand_value)
