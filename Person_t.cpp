@@ -5,7 +5,7 @@
 
  Person_t::	~Person_t(){}
  
- Person_t::Person_t(const string &name,const int age): m_id(++m_globID), m_name(name), m_age(age)
+ Person_t::Person_t(const string &name, int age): m_id(++m_globID), m_name(name), m_age(age)
  {
 	 //already took care of advancing the m_globID
  }

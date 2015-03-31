@@ -6,12 +6,12 @@ const size_t PersonArray_t::m_expand_value = 16;
 
 PersonArray_t::PersonArray_t() : m_num_of_elements(0), m_capacity(m_expand_value)
 {		
-	m_array_pointer = new Person_t *[m_expand_value];
+	m_array_pointer = new const Person_t *[m_expand_value];
 }
 
-PersonArray_t::PersonArray_t(const size_t capacity_size) : m_num_of_elements(0), m_capacity(capacity_size)
+PersonArray_t::PersonArray_t(size_t capacity_size) : m_num_of_elements(0), m_capacity(capacity_size)
 {
-	m_array_pointer = new Person_t *[m_capacity];
+	m_array_pointer = new const Person_t *[m_capacity];
 }
 
 
@@ -36,7 +36,7 @@ bool PersonArray_t::is_empty() const
 	return m_num_of_elements == 0;
 }
 
-void  PersonArray_t::insert(Person_t *person)
+void  PersonArray_t::insert(const Person_t *person)
 {  
 	insert_at_index(m_num_of_elements, person);
 }
@@ -46,31 +46,31 @@ Person_t * PersonArray_t::get_first_element() const
 	if (is_empty())
 		return NULL;
 
-	return m_array_pointer[0]; 
+	return (Person_t*) m_array_pointer[0]; 
 }
 Person_t * PersonArray_t::get_last_element() const
 {
 	if (is_empty())
 		return NULL;
 
-	return  m_array_pointer[m_num_of_elements - 1];
+	return  (Person_t*)m_array_pointer[m_num_of_elements - 1];
 }
 
-Person_t * PersonArray_t::find(Person_t &person) const
+Person_t * PersonArray_t::find(const Person_t &person) const
 { 
 	for (size_t i = 0; i < m_num_of_elements; i++)
 	{
 		if (person == *m_array_pointer[i])
 		{
-			return m_array_pointer[i]; 
+			return (Person_t*)m_array_pointer[i];
 		}
 	}
-	return 0;
+	return NULL;
 }
 
 
-Person_t * PersonArray_t::remove(Person_t &person)
-{ 
+Person_t * PersonArray_t::remove(const Person_t &person)
+{
 	Person_t *result = NULL;
 	size_t i = 0;
 	/*finding the index of the element*/
@@ -78,8 +78,8 @@ Person_t * PersonArray_t::remove(Person_t &person)
 	{
 		if (person == *m_array_pointer[i])
 		{
-			result = m_array_pointer[i];
-			 break;
+			result = (Person_t *)m_array_pointer[i];
+			break;
 
 		}
 	}
@@ -90,20 +90,16 @@ Person_t * PersonArray_t::remove(Person_t &person)
 }
 
 
-void PersonArray_t::shift_left(int index)
+void PersonArray_t::shift_left(size_t index)
 {
-	if (index < 0)
-	{
-		return;
-	}
 	/* removing it and moving the elements to the right place*/
-	for (; index < (int)m_num_of_elements - 1; index++)
+	for (; index < m_num_of_elements - 1; index++)
 	{
 		m_array_pointer[index] = m_array_pointer[index + 1];
 	}
 }
 
-void PersonArray_t::remove_delete(Person_t &person)
+void PersonArray_t::remove_delete(const Person_t &person)
 { 
 	/*finding the index of the element*/
 	for (size_t i = 0; i < m_num_of_elements; i++)
@@ -136,7 +132,7 @@ void PersonArray_t::remove_delete_all()
 
 void PersonArray_t::expand_capacity()
 {
-	Person_t ** temp = new Person_t *[m_capacity + m_expand_value];
+	const Person_t ** temp = new const Person_t *[m_capacity + m_expand_value];
 	for (size_t i = 0; i < m_capacity; i++)
 	{
 		temp[i] = m_array_pointer[i];
@@ -145,7 +141,7 @@ void PersonArray_t::expand_capacity()
 	m_capacity += m_expand_value;
 }
 
-int PersonArray_t::append(const size_t index,Person_t *person)
+int PersonArray_t::append(size_t index, const Person_t *person)
 {
 	if (index >=m_num_of_elements)
 		return 0;
@@ -156,7 +152,7 @@ int PersonArray_t::append(const size_t index,Person_t *person)
 }
 
 
-int PersonArray_t::prepend(const size_t index,Person_t *person)
+int PersonArray_t::prepend(size_t index, const Person_t *person)
 {
 	if (index == 0 || index > m_num_of_elements) 
 		return 0;
@@ -173,7 +169,7 @@ void PersonArray_t::print_array() const
 	}
 }
 
-Person_t* PersonArray_t::get_element(const size_t index) const
+Person_t* PersonArray_t::get_element(size_t index) const
 {
 	if (index >= m_num_of_elements) //error in index
 		return NULL;
@@ -181,7 +177,7 @@ Person_t* PersonArray_t::get_element(const size_t index) const
 }
 
 
-void PersonArray_t::insert_at_index(const size_t index,Person_t *person)
+void PersonArray_t::insert_at_index(size_t index, const Person_t *person)
 {
 
 	/* no place*/

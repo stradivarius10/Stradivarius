@@ -5,7 +5,7 @@ class Person_t
 {
 	public:
 		~Person_t();
-		Person_t(const string &name,const int age); //CTOR - returns a person with a name, and age and a unique ID
+		Person_t(const string &name, int age); //CTOR - returns a person with a name, and age and a unique ID
 		Person_t(const Person_t& person);
 		Person_t & operator= (const Person_t &person);  //note that ID is UNIQUE and won't be copied - approved by the teacher
 		bool operator==(const Person_t &person) const; // Based on teacher agreement - the == wil be done
@@ -16,7 +16,7 @@ class Person_t
 		int get_age() const;
 		string get_name() const;
 
-		void set_age( int age);
+		void set_age(int age);
 		void set_name(string name);
 		
 		

@@ -4,50 +4,22 @@ using namespace std;
 
 //====================================================
 
-static Person_t* getPtr() {
+static string getName()
+{
 	string name;
-	string tmp;
-	bool success = false;
-	int age;
 	cout << "\nEnter the name of the person:" << endl;
 	cin >> name;
-	cout << "\nEnter the age of person: (Age has to be in 0-120 range)" << endl;
-	cin >> age;
-	//	checking age
-	while (!success)
-	{ 
-		while (cin.fail())
-		{
-			cout << "Age has to be in 0-120 range. Please try again:" << endl;
-			cin.clear();
-			cin >> tmp; //remove all the word and try again
-			cin >> age;
-		}
-		if (age > 120 ||age < 0)
-		{
-			cout << "Age has to be in 0-120 range. Please try again:" << endl;
-			success = false;
-			cin >> age;
-		}
-		else
-		{
-			success = true;
-		}
-		
-	}
-	Person_t* ip = new Person_t(name, age);
-	return ip;
+	return name;
 }
 
 //====================================================
 
-static Person_t getValue() {
-	string name;
+static int getAge()
+{
 	string tmp;
 	bool success = false;
 	int age;
-	cout << "\nEnter the name of the person:" << endl;
-	cin >> name;
+
 	cout << "\nEnter the age of person: (Age has to be in 0-120 range)" << endl;
 	cin >> age;
 	//	checking age
@@ -70,8 +42,32 @@ static Person_t getValue() {
 		{
 			success = true;
 		}
-
 	}
+	return age;
+}
+
+//====================================================
+
+static Person_t* getPtr() {
+	string name;
+	int age;
+
+	name = getName();
+	age = getAge();
+
+	Person_t* ip = new Person_t(name, age);
+	return ip;
+}
+
+//====================================================
+
+static Person_t getValue() {
+	string name;
+	int age;
+
+	name = getName();
+	age = getAge();
+
 	Person_t value(name, age);
 	return value;
 }
