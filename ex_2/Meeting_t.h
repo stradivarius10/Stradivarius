@@ -21,6 +21,7 @@ template <class T> class Meeting_t
 public:
 	virtual ~Meeting_t();
 	Meeting_t(); 
+	Meeting_t<T>(const Meeting_t& meeting); // copy constructor
 	/* This function is initializing the objects and might throw expcetion. They "Way" of the big companies
 	to overcome the throwing execptions in the constructor..*/
     void create(const T &start_time,const T &end_time,const string &subject); //should we throw exception
@@ -54,6 +55,14 @@ template <class T>  Meeting_t<T>:: ~Meeting_t()
 
 
 template <class T>  Meeting_t<T>::Meeting_t(){} //default constructor we wil use init instead
+
+
+template <class T>  Meeting_t<T>::Meeting_t(const Meeting_t& meeting)
+{
+	this->end_time_m = meeting.end_time_m;
+	this->start_time_m = meeting.start_time_m;
+	this->subject_m = meeting.subject_m;
+} 
 
 
 template <class T> void  Meeting_t<T>::create(const T &start_time, const T &end_time, const string &subject)

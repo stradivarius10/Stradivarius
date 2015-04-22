@@ -22,13 +22,14 @@ template <class T> class DayCalendar_t
 
 public:
 	virtual ~DayCalendar_t();
+
 	//DayCalendar_t; (); //Default will be just fine for us.	
 	//bool operator==  will be providedp by the compiler
 
 	void insert_meeting(const Meeting_t<T> * meeting); // can throw exception
 	void remove_meeting(const T & start_time); //throws exception if not existed 
 	Meeting_t<T> *find_meeting(const T & start_time) const; //returns null if not found
-
+	virtual void remove_all(); // destroy all elements
 private:
 	/* this function will tell us the index that the item should be inserted and thus
 	the array will be sorted */
@@ -78,6 +79,18 @@ template <class T> Meeting_t<T> * DayCalendar_t<T>::find_meeting(const T & start
 	return NULL;
 }
 
+template <class T> void DayCalendar_t<T>::remove_all()
+{
+	/*
+	for (int i = 0; i < meetings_arr_m.size(); i++)
+	{
+		delete meetings_arr_m.get(i);
+	}
+	*/
+	meetings_arr_m.clear();
+
+
+}
 
 
 template <class T> void DayCalendar_t<T>::insert_meeting(const Meeting_t<T> * meeting)
