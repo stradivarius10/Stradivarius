@@ -7,15 +7,10 @@ template <class T> class LocationMeeting_t:public Meeting_t<T>
 {
 public:
 	virtual ~LocationMeeting_t();
-	LocationMeeting_t(); //CTOR - returns a person with a name, and age and a unique ID
-	void create(T start_time, T end_time, string subject, string location); //should we throw exception
-	//bool operator==(const Meeting_t &meeting) const;
+	LocationMeeting_t(); 
+	void create(const T &start_time, const T &end_time, const string &subject,const string location); //should we throw exception
 
-//	T get_start_time() const; //inline???
-//	T get_end_time() const;
-//	string get_subject() const;
-	string get_location() const;
-
+	inline string get_location() const;
 
 
 private:
@@ -33,7 +28,7 @@ template <class T>  virtual LocationMeeting_t<T>:: ~LocationMeeting_t()
 template <class T>   LocationMeeting_t<T>::LocationMeeting_t(){} //default constructor we wil use init instead
 
 
-template <class T> void   LocationMeeting_t<T>::create(T start_time, T end_time, string subject, string location)
+template <class T> void   LocationMeeting_t<T>::create(const T &start_time, const T &end_time, const string &subject, const string location)
 {
 	create(start_time, end_time, subject);
 	location_m = location;

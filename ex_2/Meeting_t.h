@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 using namespace std;
+
 template <class T> class Meeting_t
 {
 	
@@ -19,17 +20,22 @@ template <class T> class Meeting_t
 
 public:
 	virtual ~Meeting_t();
-	Meeting_t(); //CTOR - returns a person with a name, and age and a unique ID
-    void create(T start_time, T end_time, string subject); //should we throw exception
-	bool operator==(const Meeting_t &meeting) const; 
+	Meeting_t(); 
+	/* This function is initializing the objects and might throw expcetion. They "Way" of the big companies
+	to overcome the throwing execptions in the constructor..*/
+    void create(const T &start_time,const T &end_time,const string &subject); //should we throw exception
+	
+	/* return true if there is an intersection - according the the HW specs.*/
+	inline bool operator==(const Meeting_t &meeting) const; 
+
 	bool operator<(const Meeting_t &meeting) const;
 	bool operator>(const Meeting_t &meeting) const;
 
 
 
-	T get_start_time() const; //inline???
-	T get_end_time() const;
-	string get_subject() const;
+	inline T get_start_time() const; 
+	inline T get_end_time() const;
+	inline string get_subject() const;
 
 
 private:
@@ -50,7 +56,7 @@ template <class T>  Meeting_t<T>:: ~Meeting_t()
 template <class T>  Meeting_t<T>::Meeting_t(){} //default constructor we wil use init instead
 
 
-template <class T> void  Meeting_t<T>::create(T start_time, T end_time, string subject)
+template <class T> void  Meeting_t<T>::create(const T &start_time, const T &end_time, const string &subject)
 {
 	if ((start_time > end_time) || (start_time < 0) || (start_time >= 24))
 	{
@@ -80,18 +86,20 @@ template <class T> bool Meeting_t<T>::operator==(const Meeting_t &meeting) const
 {
 	if ((this->start_time_m <= meeting.start_time_m && this->end_time_m >= meeting.start_time_m)
 		|| (meeting.start_time_m <= this->start_time_m && meeting.end_time_m >= this->start_time_m))
+	{
 		return true;
+	}
 	return false;
 }
 
 template <class T> bool Meeting_t<T>::operator<(const Meeting_t &meeting) const
 {
-	return this->start_time_m < meeting.start_time_m;
+	return (this->start_time_m) < meeting.start_time_m;
 }
 
 template <class T> bool Meeting_t<T>::operator>(const Meeting_t &meeting) const
 {
-	return this->start_time_m > meeting.start_time_m;
+	return (this->start_time_m) > meeting.start_time_m;
 }
 
 //istream& operator>> (istream& is, Meeting_t <T> & m);

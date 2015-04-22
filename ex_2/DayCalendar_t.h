@@ -4,7 +4,6 @@
 #include <string>
 #include <iostream>
 #include <vector>
-using namespace std;
 
 
 template <class T> class DayCalendar_t
@@ -23,15 +22,17 @@ template <class T> class DayCalendar_t
 
 public:
 	virtual ~DayCalendar_t();
-	//meetings_arr_m; (); //Default will be just fine for us.	
+	//DayCalendar_t; (); //Default will be just fine for us.	
 	//bool operator==  will be providedp by the compiler
 
-	void insert_meeting(Meeting_t<T> * meeting);
-	void remove_meeting(T & start_time);
-	Meeting_t<T> *find_meeting(T & start_time) const; //returns null if not found
+	void insert_meeting(const Meeting_t<T> * meeting); // can throw exception
+	void remove_meeting(const T & start_time); //throws exception if not existed 
+	Meeting_t<T> *find_meeting(const T & start_time) const; //returns null if not found
 
 private:
-	size_t find_correct_insertion_location(Meeting_t<T> & meeting);
+	/* this function will tell us the index that the item should be inserted and thus
+	the array will be sorted */
+	size_t find_correct_insertion_location(Meeting_t<T> & meeting) const;
 	vector<Meeting_t<T> *> meetings_arr_m;
 
 };
@@ -43,7 +44,7 @@ template <class T>  virtual DayCalendar_t<T>:: ~DayCalendar_t()
 
 
 
-template <class T> void DayCalendar_t<T>::remove_meeting(T & start_time)
+template <class T> void DayCalendar_t<T>::remove_meeting(const T & start_time)
 {
 	size_t i = 0;
 
@@ -58,14 +59,14 @@ template <class T> void DayCalendar_t<T>::remove_meeting(T & start_time)
 		if (meetings_arr_m.get(i)->get_start_time() == start_time)
 		{
 			meetings_arr_m.erase(i);
+
 		}
 	}
-	return i;
 }
 
 
 
-template <class T> Meeting_t<T> * DayCalendar_t<T>::find_meeting(T & start_time) const
+template <class T> Meeting_t<T> * DayCalendar_t<T>::find_meeting(const T & start_time) const
 {
 	for (int i = 0; i < meetings_arr_m.size(); i++)
 	{
@@ -79,20 +80,21 @@ template <class T> Meeting_t<T> * DayCalendar_t<T>::find_meeting(T & start_time)
 
 
 
-template <class T> void DayCalendar_t<T>::insert_meeting(Meeting_t<T> * meeting)
+template <class T> void DayCalendar_t<T>::insert_meeting(const Meeting_t<T> * meeting)
 {
 	size_t position;
 	// already existed!
 	if (find_meeting(meeting->get_start_time()) == NULL)
 	{
-		throw exception("Already existed bitch!");
+		throw exception("Already existed (may be a time intersection as well)!");
 	}
+
 	position = find_correct_insertion_location(*meeting);
 	meetings_arr_m.insert(position, meeting);
 
 }
 
-template <class T> size_t DayCalendar_t<T>::find_correct_insertion_location(Meeting_t<T> & meeting)
+template <class T> size_t DayCalendar_t<T>::find_correct_insertion_location(Meeting_t<T> & meeting) const
 {
 	size_t i = 0;
 	for (; i < meetings_arr_m.size(); i++)
