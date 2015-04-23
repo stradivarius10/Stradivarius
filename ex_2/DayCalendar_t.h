@@ -34,6 +34,7 @@ public:
 private:
 	/* this function will tell us the index that the item should be inserted and thus
 	the array will be sorted */
+	bool is_meeting_exists(const Meeting_t<T> & meeting) const;
 	size_t find_correct_insertion_location(Meeting_t<T> & meeting) const;
 	vector<Meeting_t<T> *> meetings_arr_m;
 
@@ -103,11 +104,11 @@ template <class T> void DayCalendar_t<T>::remove_all()
 }
 
 
-template <class T> void DayCalendar_t<T>::insert_meeting( Meeting_t<T> * meeting)
+template <class T> void DayCalendar_t<T>::insert_meeting(Meeting_t<T> * meeting)
 {
 	size_t position;
 	// already existed!
-	if (find_meeting(meeting->get_start_time()) != NULL)
+	if (is_meeting_exists(*meeting))
 	{
 		throw exception("Already existed (may be a time intersection as well)!");
 	}
@@ -130,6 +131,19 @@ template <class T> size_t DayCalendar_t<T>::find_correct_insertion_location( Mee
 		}
 	}
 	return i;
+}
+
+template <class T> bool DayCalendar_t<T>::is_meeting_exists(const Meeting_t<T> & meeting) const
+{
+	size_t i = 0;
+	for (; i < meetings_arr_m.size(); i++)
+	{
+		if (meeting == *(meetings_arr_m[i]))
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 

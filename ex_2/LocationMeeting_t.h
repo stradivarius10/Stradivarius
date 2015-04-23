@@ -17,9 +17,9 @@ private:
 	string location_m; 
 };
 
-template <class T>  virtual LocationMeeting_t<T>:: ~LocationMeeting_t()
+template <class T>  LocationMeeting_t<T>:: ~LocationMeeting_t()
 {
-	delete(&location_m); /// wtf???????
+	//delete(&location_m); /// wtf???????
 }
 
 
@@ -30,7 +30,7 @@ template <class T>   LocationMeeting_t<T>::LocationMeeting_t(){} //default const
 
 template <class T> void   LocationMeeting_t<T>::create(const T &start_time, const T &end_time, const string &subject, const string location)
 {
-	create(start_time, end_time, subject);
+	Meeting_t<T>::create(start_time, end_time, subject);
 	location_m = location;
 }
 
