@@ -12,6 +12,8 @@ public:
 
 	inline string get_location() const;
 
+protected:
+	virtual ostream& meeting_out(ostream& os) const;
 
 private:
 	string location_m; 
@@ -39,9 +41,10 @@ template <class T> string LocationMeeting_t<T>::get_location() const
 	return location_m;
 }
 
-//istream& operator>> (istream& is, Meeting_t <T> & m);
-//stream& operator<< (ostream& os, const Meeting_t <T> & m);
-
-
+template <class T> ostream& LocationMeeting_t<T>::meeting_out(ostream& os) const
+{
+	Meeting_t<T>::meeting_out(os) << "The location is " << location_m << endl;
+	return os;
+}
 
 #endif

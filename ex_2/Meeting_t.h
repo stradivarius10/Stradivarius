@@ -10,12 +10,7 @@ template <class T> class Meeting_t
 	
 	friend ostream& operator<< (ostream& os, const Meeting_t<T> & m)
 	{
-		
-		cout << "start time is " << m.get_start_time() << endl
-			<< "end time is " << m.get_end_time() << endl
-			<< "subject is " << m.get_subject() << endl;
-		return os;
-		
+		return m.meeting_out(os);
 	}
 
 public:
@@ -38,6 +33,8 @@ public:
 	inline T get_end_time() const;
 	inline string get_subject() const;
 
+protected:
+	virtual ostream& meeting_out(ostream& os) const;
 
 private:
 	T start_time_m;
@@ -111,8 +108,13 @@ template <class T> bool Meeting_t<T>::operator>(const Meeting_t &meeting) const
 	return (this->start_time_m) > meeting.start_time_m;
 }
 
-//istream& operator>> (istream& is, Meeting_t <T> & m);
-//stream& operator<< (ostream& os, const Meeting_t <T> & m);
+template <class T> ostream& Meeting_t<T>::meeting_out(ostream& os) const
+{
+	os << "start time is " << get_start_time() << endl
+		<< "end time is " << get_end_time() << endl
+		<< "subject is " << get_subject() << endl;
+	return os;
+}
 
 
 #endif

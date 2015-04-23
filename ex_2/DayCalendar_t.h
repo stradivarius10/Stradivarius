@@ -120,7 +120,7 @@ template <class T> void DayCalendar_t<T>::insert_meeting(Meeting_t<T> * meeting)
 
 }
 
-template <class T> size_t DayCalendar_t<T>::find_correct_insertion_location( Meeting_t<T> & meeting) const
+template <class T> size_t DayCalendar_t<T>::find_correct_insertion_location(Meeting_t<T> & meeting) const
 {
 	size_t i = 0;
 	for (; i < meetings_arr_m.size(); i++)
