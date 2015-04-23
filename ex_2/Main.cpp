@@ -94,7 +94,7 @@ static void test_int()
 		case 'r':  start_time = get_start_time();
 			day.remove_meeting((int)start_time);
 			break;
-		
+
 		case 'p':  cout << day << endl;
 			break;
 		default: cont = false; break;
