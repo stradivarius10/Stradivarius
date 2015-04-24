@@ -5,41 +5,43 @@
 
 static float get_start_time()
 {
-	float start_time;
+	float start_time = -1.0;
 	string tmp;
-
-	cout << "Enter the start time:" << endl;
-	
-	cin >> start_time;
-
-	while (cin.fail())
+	while ((start_time < 0) || (start_time > 24))
 	{
-		cout << "The time has to be number. Please try again:" << endl;
-		cin.clear();
-		cin >> tmp; //remove all the word and try again
+		cout << "Enter the start time (has to be 0-24):" << endl;
 		cin >> start_time;
+
+		while (cin.fail())
+		{
+			cout << "The time has to be number. Please try again:" << endl;
+			cin.clear();
+			cin >> tmp; //remove all the word and try again
+			cin >> start_time;
+		}
 	}
 
 	return start_time;
 }
 
-static float get_end_time()
+static float get_end_time(float start_time)
 {
-	float end_time;
+	float end_time = -1.0;
 	string tmp;
-
-	cout << "Enter the end time:" << endl;
-	
-	cin >> end_time;
-
-	while (cin.fail())
+	while ((end_time < 0) || (end_time > 24) || (end_time <= start_time))
 	{
-		cout << "The time has to be number. Please try again:" << endl;
-		cin.clear();
-		cin >> tmp; //remove all the word and try again
-		cin >> end_time;
-	}
+		cout << "Enter the end time (has to be 0-24 and larger than start time):" << endl;
 
+		cin >> end_time;
+
+		while (cin.fail())
+		{
+			cout << "The time has to be number. Please try again:" << endl;
+			cin.clear();
+			cin >> tmp; //remove all the word and try again
+			cin >> end_time;
+		}
+	}
 	return end_time;
 }
 
@@ -66,7 +68,7 @@ static Meeting_t<int>* getMeeting_int(bool with_location)
 	Meeting_t<int> *meeting;
 
 	start_time = (int)get_start_time();
-	end_time = (int)get_end_time();
+	end_time = (int)get_end_time((float)start_time);
 	subject = getSubject();
 	if (with_location)
 	{
@@ -91,7 +93,7 @@ static Meeting_t<float>* getMeeting_float(bool with_location)
 	Meeting_t<float> *meeting;
 
 	start_time = get_start_time();
-	end_time = get_end_time();
+	end_time = get_end_time(start_time);
 	subject = getSubject();
 	if (with_location)
 	{
@@ -147,10 +149,32 @@ static void test_int()
 					cout << *meeting << endl;
 				break;
 			case 'i': meeting = getMeeting_int(false);
-				day.insert_meeting(meeting);
+				try
+				{
+					day.insert_meeting(meeting);
+				}
+				catch (exception &e)
+				//catch (char const * error)
+				{
+					cout << e.what() << endl;
+					//cout << error << endl;
+					//freeing memory
+					delete meeting;
+				}
 				break;
 			case 'j': meeting = getMeeting_int(true);
-				day.insert_meeting(meeting);
+				try
+				{
+					day.insert_meeting(meeting);
+				}
+				catch (exception &e)
+					//catch (char const * error)
+				{
+					cout << e.what() << endl;
+					//cout << error << endl;
+					//freeing memory
+					delete meeting;
+				}
 				break;
 			case 'r':  start_time = get_start_time();
 				day.remove_meeting((int)start_time);
@@ -165,6 +189,7 @@ static void test_int()
 		//freeing memory
 		day.remove_all();
 	}
+	//catch (exception e)
 	catch (char const * error)
 	{
 		cout << error << endl;
@@ -210,10 +235,32 @@ static void test_float()
 					cout << *meeting << endl;
 				break;
 			case 'i':  meeting = getMeeting_float(false);
-				day.insert_meeting(meeting);
+				try
+				{
+					day.insert_meeting(meeting);
+				}
+				catch (exception &e)
+					//catch (char const * error)
+				{
+					cout << e.what() << endl;
+					//cout << error << endl;
+					//freeing memory
+					delete meeting;
+				}
 				break;
 			case 'j':  meeting = getMeeting_float(true);
-				day.insert_meeting(meeting);
+				try
+				{
+					day.insert_meeting(meeting);
+				}
+				catch (exception &e)
+					//catch (char const * error)
+				{
+					cout << e.what() << endl;
+					//cout << error << endl;
+					//freeing memory
+					delete meeting;
+				}
 				break;
 			case 'r':  start_time = get_start_time();
 				day.remove_meeting(start_time);
@@ -239,16 +286,29 @@ static void test_float()
 
 int main() {
 	char c;
-
-	cout << "Press i or f to choose int or float (type of time). Press any other key to exit" << endl;
-	cin >> c;
-	switch (c)
+	bool finish = false;
+	while (!finish)
 	{
-	case 'i': test_int(); break;
-	case 'f': test_float(); break;
-	default:
-		return 0;
-	}
+		cout << "Press i or f to choose int or float (type of time). Press any other key to exit" << endl;
+		cin >> c;
 
+		switch (c)
+		{
+			case 'i':
+			{
+				test_int();
+				finish = true;
+				break;
+			}
+			case 'f':
+			{
+				test_float();
+				finish = true;
+				break;
+			}
+
+		}
+	}
 	return 0;
 }
+

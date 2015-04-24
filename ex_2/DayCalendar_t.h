@@ -7,52 +7,70 @@
 
 template <class T> class DayCalendar_t
 {
- friend ostream& operator<< (ostream& os, const DayCalendar_t<T> & m)
- {
-	 cout << "The calendar is" << endl;
-	 for (size_t i = 0; i < m.get_array().size(); i++)
-	 {
-		 cout << *(m.get_array()[i]) << endl;
-	 }
-	 return os;
- }
-
-
-
 public:
-	virtual ~DayCalendar_t();// default is fine
+	virtual ~DayCalendar_t();
 
-	//DayCalendar_t(); //Default will be just fine for us.	
-	//bool operator==  will be providedp by the compiler
+	DayCalendar_t(); //Default will be just fine for us. (same reason as for meeting_t) 
 
-	void insert_meeting( Meeting_t<T> * meeting); // can throw exception
-	void remove_meeting(const T & start_time); //throws exception if not existed 
-	Meeting_t<T> *find_meeting(const T & start_time) const; //returns null if not found
-	virtual void remove_all(); // destroy all elements
+	virtual void insert_meeting( Meeting_t<T> * meeting); // can throw exception. virtual so in a case that someone is
+	// overiding in order to let's say record the meeting somewhere else, so he can do it.
+	virtual void remove_meeting(const T & start_time); //throws exception if not existed 
+	virtual Meeting_t<T> *find_meeting(const T & start_time) const; //returns null if not found
+	virtual bool operator==(const DayCalendar_t &meeting) const;
+	DayCalendar_t &  operator=(const DayCalendar_t &meeting); //copy constructor. In case we want to have the same calendar for a different day
+	virtual void remove_all(); // destroy all elements - if the user wishes!
 
-	vector<Meeting_t<T> *> get_array() const;
 private:
+	//vector<Meeting_t<T> *> get_array() const; 
+
 	/* this function will tell us the index that the item should be inserted and thus
 	the array will be sorted */
 	bool is_meeting_exists(const Meeting_t<T> & meeting) const;
 	size_t find_correct_insertion_location(Meeting_t<T> & meeting) const;
 	vector<Meeting_t<T> *> meetings_arr_m;
 
+
+	friend ostream& operator<< (ostream& os, const DayCalendar_t<T> & m)
+	{
+		cout << "The calendar is" << endl;
+		for (size_t i = 0; i < m.meetings_arr_m.size(); i++)
+		{
+			cout << *(m.meetings_arr_m[i]) << endl;
+		}
+		return os;
+	}
 };
 
+template <class T>  DayCalendar_t<T>::DayCalendar_t(){}
 
-
+/*
 template <class T> vector<Meeting_t<T> *>  DayCalendar_t<T>::get_array() const
 {
 	return meetings_arr_m;
 }
-
+*/
 template <class T>  DayCalendar_t<T>:: ~DayCalendar_t()
 {
 	meetings_arr_m.clear();
 }
 
 
+template <class T> bool DayCalendar_t<T>::operator==(const DayCalendar_t &calendar_other) const
+{
+	return meetings_arr_m == calendar_other.meetings_arr_m;
+}
+
+
+template <class T>  DayCalendar_t<T> & DayCalendar_t<T>::operator=(const DayCalendar_t &calendar)
+{
+	// since we overided the == operator
+	if (this != calendar)
+	{
+		this->meetings_arr_m = calendar.meetings_arr_m;
+	}
+
+	return *this;
+}
 
 
 template <class T> void DayCalendar_t<T>::remove_meeting(const T & start_time)
@@ -92,12 +110,12 @@ template <class T> Meeting_t<T> * DayCalendar_t<T>::find_meeting(const T & start
 
 template <class T> void DayCalendar_t<T>::remove_all()
 {
-	/*
-	for (int i = 0; i < meetings_arr_m.size(); i++)
+	
+	for (size_t i = 0; i < meetings_arr_m.size(); i++)
 	{
-		delete meetings_arr_m.get(i);
+		delete meetings_arr_m[i];
 	}
-	*/
+	
 	meetings_arr_m.clear();
 
 
@@ -110,7 +128,7 @@ template <class T> void DayCalendar_t<T>::insert_meeting(Meeting_t<T> * meeting)
 	// already existed!
 	if (is_meeting_exists(*meeting))
 	{
-		throw ("Already existed (may be a time intersection as well)!");
+		throw exception("Already existed (may be a time intersection as well)!");
 	}
 
 	position = find_correct_insertion_location(*meeting);
