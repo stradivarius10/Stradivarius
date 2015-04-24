@@ -62,7 +62,7 @@ template <class T> void DayCalendar_t<T>::remove_meeting(const T & start_time)
 	//  not existed!
 	if (find_meeting(start_time) == NULL)
 	{
-		throw exception("Nothing to remove!!!!!");
+		throw ("Nothing to remove!!!!!");
 	}
 
 	for (; i < meetings_arr_m.size(); i++)
@@ -110,7 +110,7 @@ template <class T> void DayCalendar_t<T>::insert_meeting(Meeting_t<T> * meeting)
 	// already existed!
 	if (is_meeting_exists(*meeting))
 	{
-		throw exception("Already existed (may be a time intersection as well)!");
+		throw ("Already existed (may be a time intersection as well)!");
 	}
 
 	position = find_correct_insertion_location(*meeting);
@@ -125,7 +125,7 @@ template <class T> size_t DayCalendar_t<T>::find_correct_insertion_location(Meet
 	size_t i = 0;
 	for (; i < meetings_arr_m.size(); i++)
 	{
-		if (meeting > *(meetings_arr_m[i]))
+		if (meeting < *(meetings_arr_m[i]))
 		{
 			return i;
 		}

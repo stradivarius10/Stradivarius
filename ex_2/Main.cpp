@@ -165,7 +165,7 @@ static void test_int()
 		//freeing memory
 		day.remove_all();
 	}
-	catch (const char * error)
+	catch (char const * error)
 	{
 		cout << error << endl;
 		//freeing memory
@@ -228,7 +228,7 @@ static void test_float()
 		//freeing memory
 		day.remove_all();
 	}
-	catch (const char * error)
+	catch (char const * error)
 	{
 		cout << error << endl;
 		//freeing memory

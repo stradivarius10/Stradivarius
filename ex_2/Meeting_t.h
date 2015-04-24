@@ -64,9 +64,9 @@ template <class T>  Meeting_t<T>::Meeting_t(const Meeting_t& meeting)
 
 template <class T> void  Meeting_t<T>::create(const T &start_time, const T &end_time, const string &subject)
 {
-	if ((start_time > end_time) || (start_time < 0) || (start_time >= 24))
+	if ((start_time >= end_time) || (start_time < 0) || (end_time >= 24))
 	{
-		throw exception("Illegal params");
+		throw ("Illegal params");
 	}
 	start_time_m = start_time;
 	end_time_m = end_time;
