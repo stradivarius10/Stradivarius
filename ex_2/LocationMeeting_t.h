@@ -16,6 +16,7 @@ public:
 	LocationMeeting_t<T> &  operator=(const  LocationMeeting_t<T> &meeting);
 	inline string get_location() const;
 
+protected:
 	/* will print the object. We use it in order to achieve polymorphism of prints*/
 	virtual ostream& print(ostream& os) const;
 

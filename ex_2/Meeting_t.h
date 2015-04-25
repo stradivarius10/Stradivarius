@@ -7,17 +7,22 @@ using namespace std;
 
 template <class T> class Meeting_t
 {
-	
+	friend ostream& operator<<(ostream& os, const Meeting_t<T> & m)
+	{
+		m.print(os) << endl;
+		return os;
+	}
+
 public:
 	virtual ~Meeting_t();
 	Meeting_t(); // We said in class that we shouldn't throw excpetions in constructors and we rather use a init function after we create the object.
 	Meeting_t<T>(const Meeting_t<T>& meeting); // copy constructor
 	/* This function is initializing the objects and might throw expcetion. They "Way" of the big companies
 	to overcome the throwing execptions in the constructor..*/
-    void create(const T &start_time,const T &end_time,const string &subject); 
+	void create(const T &start_time, const T &end_time, const string &subject);
 
 
-	/* return true if there is an intersection - according the the HW specs.We didn't make it virtual so 
+	/* return true if there is an intersection - according the the HW specs.We didn't make it virtual so
 	someone overides it and overides the HW sumbission guidline*/
 	inline bool operator==(const Meeting_t<T> &meeting) const;
 
@@ -26,10 +31,11 @@ public:
 	inline bool operator<(const Meeting_t<T> &meeting) const;
 	inline bool operator>(const Meeting_t<T> &meeting) const;
 
-	inline T get_start_time() const; 
+	inline T get_start_time() const;
 	inline T get_end_time() const;
 	inline string get_subject() const;
 
+protected:
 	/* will print the object. We use it in order to achieve polymorphism of prints*/
 	virtual ostream& print(ostream& os) const;
 
@@ -131,13 +137,5 @@ template <class T> bool Meeting_t<T>::operator>(const Meeting_t<T> &meeting) con
 {
 	return (this->start_time_m) > meeting.start_time_m;
 }
-
-template <class T>  ostream& operator<< (ostream& os, const Meeting_t<T> & m)
-{
-	m.print(os) << endl;
-	return os;
-}
-
-
 
 #endif
