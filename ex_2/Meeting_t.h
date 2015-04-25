@@ -10,7 +10,7 @@ template <class T> class Meeting_t
 	
 public:
 	virtual ~Meeting_t();
-	Meeting_t(); //default constructor. We said in class that we shouldn't throw excpetions in constructors and we rather us a init function after we create teh object.
+	Meeting_t(); //default constructor. We said in class that we shouldn't throw excpetions in constructors and we rather use a init function after we create the object.
 	Meeting_t<T>(const Meeting_t& meeting); // copy constructor
 	/* This function is initializing the objects and might throw expcetion. They "Way" of the big companies
 	to overcome the throwing execptions in the constructor..*/
@@ -23,8 +23,8 @@ public:
 
 	Meeting_t &  operator=(const Meeting_t &meeting);
 
-	bool operator<(const Meeting_t &meeting) const;
-	bool operator>(const Meeting_t &meeting) const;
+	inline bool operator<(const Meeting_t &meeting) const;
+	inline bool operator>(const Meeting_t &meeting) const;
 
 	inline T get_start_time() const; 
 	inline T get_end_time() const;
