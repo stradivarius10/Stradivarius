@@ -121,7 +121,10 @@ template<class T> static void test()
 					cout << "Meeting is not exist" << endl;
 				}
 				else
-					cout << *meeting << endl;
+				{
+					//cout << *meeting << endl;
+					(*meeting).print();
+				}
 				break;
 			case 'i': meeting = getMeeting<T>(false);
 				try
