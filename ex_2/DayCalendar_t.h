@@ -10,24 +10,26 @@ template <class T> class DayCalendar_t
 public:
 	virtual ~DayCalendar_t();
 
-	DayCalendar_t(); //Default will be just fine for us. (same reason as for meeting_t) 
+	DayCalendar_t();  
 
 	virtual void insert_meeting( Meeting_t<T> * meeting); // can throw exception. virtual so in a case that someone is
-	// overiding in order to let's say record the meeting somewhere else, so he can do it.
+	// overiding in order to let's say record the meeting somewhere else,  he can do it.
 	virtual void remove_meeting(const T & start_time); //throws exception if not existed 
 	virtual Meeting_t<T> *find_meeting(const T & start_time) const; //returns null if not found
-	virtual bool operator==(const DayCalendar_t &meeting) const;
-	DayCalendar_t &  operator=(const DayCalendar_t &meeting); //copy constructor. In case we want to have the same calendar for a different day
+	virtual bool operator==(const DayCalendar_t<T> &meeting) const;
+	DayCalendar_t<T> &  operator=(const DayCalendar_t<T> &meeting); //copy constructor. In case we want to have the same calendar for a different day
 	virtual void remove_all(); // destroy all elements - if the user wishes!
 
-private:
-	//vector<Meeting_t<T> *> get_array() const; 
+protected:
+	// we decided to make it protected in case a derived class wants to use it. For example, cloud may want an access to batch of meeting at once
+	vector<Meeting_t<T> *> meetings_arr_m;
 
+
+private:
 	/* this function will tell us the index that the item should be inserted and thus
 	the array will be sorted */
 	bool is_meeting_exists(const Meeting_t<T> & meeting) const;
 	size_t find_correct_insertion_location(Meeting_t<T> & meeting) const;
-	vector<Meeting_t<T> *> meetings_arr_m;
 
 
 	friend ostream& operator<< (ostream& os, const DayCalendar_t<T> & m)
@@ -35,7 +37,8 @@ private:
 		cout << "The calendar is" << endl;
 		for (size_t i = 0; i < m.meetings_arr_m.size(); i++)
 		{
-			cout << *(m.meetings_arr_m[i]) << endl;
+			//cout << *(m.meetings_arr_m[i]) << endl;
+			(*(m.meetings_arr_m[i])).print();
 		}
 		return os;
 	}
@@ -43,27 +46,20 @@ private:
 
 template <class T>  DayCalendar_t<T>::DayCalendar_t(){}
 
-/*
-template <class T> vector<Meeting_t<T> *>  DayCalendar_t<T>::get_array() const
-{
-	return meetings_arr_m;
-}
-*/
 template <class T>  DayCalendar_t<T>:: ~DayCalendar_t()
 {
 	meetings_arr_m.clear();
 }
 
 
-template <class T> bool DayCalendar_t<T>::operator==(const DayCalendar_t &calendar_other) const
+template <class T> bool DayCalendar_t<T>::operator==(const DayCalendar_t<T> &calendar_other) const
 {
 	return meetings_arr_m == calendar_other.meetings_arr_m;
 }
 
 
-template <class T>  DayCalendar_t<T> & DayCalendar_t<T>::operator=(const DayCalendar_t &calendar)
+template <class T>  DayCalendar_t<T> & DayCalendar_t<T>::operator=(const DayCalendar_t<T> &calendar)
 {
-	// since we overided the == operator
 	if (this != calendar)
 	{
 		this->meetings_arr_m = calendar.meetings_arr_m;

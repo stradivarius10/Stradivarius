@@ -129,10 +129,8 @@ template<class T> static void test()
 					day.insert_meeting(meeting);
 				}
 				catch (exception &e)
-				//catch (char const * error)
 				{
 					cout << e.what() << endl;
-					//cout << error << endl;
 					//freeing memory
 					delete meeting;
 				}
@@ -143,10 +141,8 @@ template<class T> static void test()
 					day.insert_meeting(meeting);
 				}
 				catch (exception &e)
-					//catch (char const * error)
 				{
 					cout << e.what() << endl;
-					//cout << error << endl;
 					//freeing memory
 					delete meeting;
 				}
