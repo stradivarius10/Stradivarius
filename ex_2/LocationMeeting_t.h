@@ -17,7 +17,7 @@ public:
 	inline string get_location() const;
 
 	/* will print the object. We use it in order to achieve polymorphism of prints*/
-	virtual void print() const;
+	virtual ostream& print(ostream& os) const;
 
 
 private:
@@ -46,28 +46,15 @@ template <class T>  LocationMeeting_t<T>::LocationMeeting_t(const LocationMeetin
 	this->location_m = meeting.location_m;
 }
 
-
-
-template <class T> ostream& operator<< (ostream& os, const LocationMeeting_t<T> & m)
-{
-
-	
-	os << "start time is " << m.get_start_time() << endl
-		<< "end time is " << m.get_end_time() << endl
-		<< "subject is " << m.get_subject() << endl
-	<< "location is " << m.get_location() << endl;
-
-	return os;
-}
-
 template <class T> string LocationMeeting_t<T>::get_location() const
 {
 	return location_m;
 }
 
-template <class T> void LocationMeeting_t<T>::print() const
+template <class T> ostream& LocationMeeting_t<T>::print(ostream& os) const
 {
-	cout << *this;
+	Meeting_t<T>::print(os) << "location is " << location_m << endl;
+	return os;
 }
 
 

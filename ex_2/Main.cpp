@@ -7,9 +7,9 @@ template<class T> static T get_start_time()
 {
 	T start_time = -1;
 	string tmp;
-	while ((start_time < 0) || (start_time > 24))
+	while ((start_time < 0) || (start_time >= 23))
 	{
-		cout << "Enter the start time (has to be 0-24):" << endl;
+		cout << "Enter the start time (has to be 0-22):" << endl;
 		cin >> start_time;
 
 		while (cin.fail())
@@ -28,9 +28,9 @@ template<class T> static T get_end_time(T start_time)
 {
 	T end_time = -1;
 	string tmp;
-	while ((end_time < 0) || (end_time > 24) || (end_time <= start_time))
+	while ((end_time < 0) || (end_time >= 24) || (end_time <= start_time))
 	{
-		cout << "Enter the end time (has to be 0-24 and larger than start time):" << endl;
+		cout << "Enter the end time (has to be 0-23 and larger than start time):" << endl;
 
 		cin >> end_time;
 
@@ -122,8 +122,7 @@ template<class T> static void test()
 				}
 				else
 				{
-					//cout << *meeting << endl;
-					(*meeting).print();
+					cout << *meeting << endl;
 				}
 				break;
 			case 'i': meeting = getMeeting<T>(false);
@@ -151,7 +150,14 @@ template<class T> static void test()
 				}
 				break;
 			case 'r':  start_time = get_start_time<T>();
-				day.remove_meeting(start_time);
+				try
+				{
+					day.remove_meeting(start_time);
+				}
+				catch (exception &e)
+				{
+					cout << e.what() << endl;
+				}
 				break;
 
 			case 'p':  cout << day << endl;

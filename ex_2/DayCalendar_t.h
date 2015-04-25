@@ -37,8 +37,7 @@ private:
 		cout << "The calendar is" << endl;
 		for (size_t i = 0; i < m.meetings_arr_m.size(); i++)
 		{
-			//cout << *(m.meetings_arr_m[i]) << endl;
-			(*(m.meetings_arr_m[i])).print();
+			cout << *(m.meetings_arr_m[i]) << endl;
 		}
 		return os;
 	}
@@ -76,7 +75,7 @@ template <class T> void DayCalendar_t<T>::remove_meeting(const T & start_time)
 	//  not existed!
 	if (find_meeting(start_time) == NULL)
 	{
-		throw ("Nothing to remove!!!!!");
+		throw exception("Nothing to remove!!!!!");
 	}
 
 	for (; i < meetings_arr_m.size(); i++)

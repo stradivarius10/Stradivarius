@@ -31,7 +31,7 @@ public:
 	inline string get_subject() const;
 
 	/* will print the object. We use it in order to achieve polymorphism of prints*/
-	virtual void print() const;
+	virtual ostream& print(ostream& os) const;
 
 private:
 	T start_time_m;
@@ -114,9 +114,12 @@ template <class T>  Meeting_t<T> & Meeting_t<T>::operator=(const Meeting_t<T> &m
 }
 
 
-template <class T> void Meeting_t<T>::print() const
+template <class T> ostream& Meeting_t<T>::print(ostream& os) const
 {
-	cout << *this;
+	os << "start time is " << start_time_m << endl
+		<< "end time is " << end_time_m << endl
+		<< "subject is " << subject_m << endl;
+	return os;
 }
 
 template <class T> bool Meeting_t<T>::operator<(const Meeting_t<T> &meeting) const
@@ -131,9 +134,7 @@ template <class T> bool Meeting_t<T>::operator>(const Meeting_t<T> &meeting) con
 
 template <class T>  ostream& operator<< (ostream& os, const Meeting_t<T> & m)
 {
-	os << "start time is " << m.get_start_time() << endl
-		<< "end time is " << m.get_end_time() << endl
-		<< "subject is " << m.get_subject() << endl;
+	m.print(os) << endl;
 	return os;
 }
 
