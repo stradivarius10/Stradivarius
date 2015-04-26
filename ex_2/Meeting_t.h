@@ -13,6 +13,12 @@ template <class T> class Meeting_t
 		return os;
 	}
 
+	friend istream& operator>>(istream& is, Meeting_t<T> & m)
+	{
+		m.get_input(is);
+		return is;
+	}
+
 public:
 	virtual ~Meeting_t();
 	Meeting_t(); // We said in class that we shouldn't throw excpetions in constructors and we rather use a init function after we create the object.
@@ -38,6 +44,8 @@ public:
 protected:
 	/* will print the object. We use it in order to achieve polymorphism of prints*/
 	virtual ostream& print(ostream& os) const;
+	/* get input and put it in the fields*/
+	virtual istream& get_input(istream& is);
 
 private:
 	T start_time_m;
@@ -126,6 +134,12 @@ template <class T> ostream& Meeting_t<T>::print(ostream& os) const
 		<< "end time is " << end_time_m << endl
 		<< "subject is " << subject_m << endl;
 	return os;
+}
+
+template <class T> istream& Meeting_t<T>::get_input(istream& is)
+{
+	is >> start_time_m >> end_time_m >> subject_m;
+	return is;
 }
 
 template <class T> bool Meeting_t<T>::operator<(const Meeting_t<T> &meeting) const

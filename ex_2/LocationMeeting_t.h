@@ -19,6 +19,8 @@ public:
 protected:
 	/* will print the object. We use it in order to achieve polymorphism of prints*/
 	virtual ostream& print(ostream& os) const;
+	/* get input and put it in the fields*/
+	virtual istream& get_input(istream& is);
 
 
 private:
@@ -56,6 +58,12 @@ template <class T> ostream& LocationMeeting_t<T>::print(ostream& os) const
 {
 	Meeting_t<T>::print(os) << "location is " << location_m << endl;
 	return os;
+}
+
+template <class T> istream& LocationMeeting_t<T>::get_input(istream& is)
+{
+	Meeting_t<T>::get_input(is) >> location_m;
+	return is;
 }
 
 
