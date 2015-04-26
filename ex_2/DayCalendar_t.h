@@ -11,6 +11,7 @@ public:
 	virtual ~DayCalendar_t();
 
 	DayCalendar_t();  
+	DayCalendar_t(const DayCalendar_t<T>& meeting); // copy constructor
 
 	virtual void insert_meeting( Meeting_t<T> * meeting); // can throw exception. virtual so in a case that someone is
 	// overiding in order to let's say record the meeting somewhere else,  he can do it.
@@ -19,6 +20,8 @@ public:
 	virtual bool operator==(const DayCalendar_t<T> &meeting) const;
 	DayCalendar_t<T> &  operator=(const DayCalendar_t<T> &meeting); //copy constructor. In case we want to have the same calendar for a different day
 	virtual void remove_all(); // destroy all elements - if the user wishes!
+	
+	//we have decided not to implement set functions
 
 protected:
 	// we decided to make it protected in case a derived class wants to use it. For example, cloud may want an access to batch of meeting at once
@@ -65,6 +68,11 @@ template <class T>  DayCalendar_t<T> & DayCalendar_t<T>::operator=(const DayCale
 	}
 
 	return *this;
+}
+
+template <class T>  DayCalendar_t<T>::DayCalendar_t(const DayCalendar_t<T>& meeting)
+{
+	this->meetings_arr_m = meeting.meetings_arr_m;
 }
 
 

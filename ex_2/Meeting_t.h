@@ -104,8 +104,9 @@ template <class T> string Meeting_t<T>::get_subject() const
 
 template <class T> bool Meeting_t<T>::operator==(const Meeting_t<T> &meeting) const
 {
-	if ((this->start_time_m <= meeting.start_time_m && this->end_time_m > meeting.start_time_m)
-		|| (meeting.start_time_m < this->start_time_m && meeting.end_time_m > this->start_time_m))
+	if ((this->start_time_m == meeting.start_time_m)
+		|| (this->start_time_m > meeting.start_time_m && this->start_time_m < meeting.end_time_m)
+		|| (meeting.start_time_m > this->start_time_m && meeting.start_time_m < this->end_time_m))
 	{
 		return true;
 	}
@@ -144,12 +145,12 @@ template <class T> istream& Meeting_t<T>::get_input(istream& is)
 
 template <class T> bool Meeting_t<T>::operator<(const Meeting_t<T> &meeting) const
 {
-	return (this->start_time_m) < meeting.start_time_m;
+	return (!(*this == meeting)) && (this->start_time_m) < meeting.start_time_m;
 }
 
 template <class T> bool Meeting_t<T>::operator>(const Meeting_t<T> &meeting) const
 {
-	return (this->start_time_m) > meeting.start_time_m;
+	return (!(*this == meeting)) && (this->start_time_m) > meeting.start_time_m;
 }
 
 #endif
