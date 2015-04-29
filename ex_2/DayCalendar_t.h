@@ -11,17 +11,15 @@ public:
 	virtual ~DayCalendar_t();
 
 	DayCalendar_t();  
-	DayCalendar_t(const DayCalendar_t<T>& meeting); // copy constructor
 
 	virtual void insert_meeting( Meeting_t<T> * meeting); // can throw exception. virtual so in a case that someone is
 	// overiding in order to let's say record the meeting somewhere else,  he can do it.
 	virtual void remove_meeting(const T & start_time); //throws exception if not existed 
 	virtual Meeting_t<T> *find_meeting(const T & start_time) const; //returns null if not found
 	virtual bool operator==(const DayCalendar_t<T> &meeting) const;
-	DayCalendar_t<T> &  operator=(const DayCalendar_t<T> &meeting); //copy constructor. In case we want to have the same calendar for a different day
+	/*The point of making an assignment operator virtual is to allow you from the benefit of being able to override it to copy more fields.*/
+	virtual DayCalendar_t<T> &  operator=(const DayCalendar_t<T> &meeting); //copy constructor. In case we want to have the same calendar for a different day
 	virtual void remove_all(); // destroy all elements - if the user wishes!
-	
-	//we have decided not to implement set functions
 
 protected:
 	// we decided to make it protected in case a derived class wants to use it. For example, cloud may want an access to batch of meeting at once
@@ -62,17 +60,12 @@ template <class T> bool DayCalendar_t<T>::operator==(const DayCalendar_t<T> &cal
 
 template <class T>  DayCalendar_t<T> & DayCalendar_t<T>::operator=(const DayCalendar_t<T> &calendar)
 {
-	if (this != calendar)
+	if (this != &calendar)
 	{
 		this->meetings_arr_m = calendar.meetings_arr_m;
 	}
 
 	return *this;
-}
-
-template <class T>  DayCalendar_t<T>::DayCalendar_t(const DayCalendar_t<T>& meeting)
-{
-	this->meetings_arr_m = meeting.meetings_arr_m;
 }
 
 
@@ -101,6 +94,7 @@ template <class T> void DayCalendar_t<T>::remove_meeting(const T & start_time)
 
 template <class T> Meeting_t<T> * DayCalendar_t<T>::find_meeting(const T & start_time) const
 {
+	/* Please note that accrrding to the teacher, complexity is NOT important*/
 	for (size_t i = 0; i < meetings_arr_m.size(); i++)
 	{
 		if (meetings_arr_m[i]->get_start_time() == start_time)
@@ -144,6 +138,7 @@ template <class T> void DayCalendar_t<T>::insert_meeting(Meeting_t<T> * meeting)
 template <class T> size_t DayCalendar_t<T>::find_correct_insertion_location(Meeting_t<T> & meeting) const
 {
 	size_t i = 0;
+	/* Please note that accrrding to the teacher, complexity is NOT important*/
 	for (; i < meetings_arr_m.size(); i++)
 	{
 		if (meeting < *(meetings_arr_m[i]))
@@ -157,6 +152,7 @@ template <class T> size_t DayCalendar_t<T>::find_correct_insertion_location(Meet
 template <class T> bool DayCalendar_t<T>::is_meeting_exists(const Meeting_t<T> & meeting) const
 {
 	size_t i = 0;
+	/* Please note that accrrding to the teacher, complexity is NOT important*/
 	for (; i < meetings_arr_m.size(); i++)
 	{
 		if (meeting == *(meetings_arr_m[i]))
