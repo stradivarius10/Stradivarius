@@ -32,7 +32,7 @@ public:
 	inline T get_end_time() const;
 	inline string get_subject() const;
 
-	// we have decided  to allow set for the fields becuase WE want to maintain our private fields. (fine according to the teacher) 
+	// we have decided  to not allow set for the fields becuase WE want to maintain our private fields. (fine according to the teacher) 
 protected:
 	/* will print the object. We use it in order to achieve polymorphism of prints*/
 	virtual ostream& print(ostream& os) const;

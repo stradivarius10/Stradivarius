@@ -11,6 +11,7 @@ public:
 	virtual ~DayCalendar_t();
 
 	DayCalendar_t();  
+	DayCalendar_t(const DayCalendar_t<T>& meeting); // copy constructor
 
 	virtual void insert_meeting( Meeting_t<T> * meeting); // can throw exception. virtual so in a case that someone is
 	// overiding in order to let's say record the meeting somewhere else,  he can do it.
@@ -66,6 +67,12 @@ template <class T>  DayCalendar_t<T> & DayCalendar_t<T>::operator=(const DayCale
 	}
 
 	return *this;
+}
+
+
+template <class T>  DayCalendar_t<T>::DayCalendar_t(const DayCalendar_t<T>& meeting)
+{
+	this->meetings_arr_m = meeting.meetings_arr_m;
 }
 
 
