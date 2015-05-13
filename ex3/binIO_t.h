@@ -1,3 +1,7 @@
+#ifndef BINIO_T
+#define BINIO_T
+
+
 #include "virtIO_t.h"
 
 class binIO_t : public virtIO_t
@@ -5,6 +9,9 @@ class binIO_t : public virtIO_t
 public:
 	virtual ~binIO_t();
 	binIO_t(const string &path, const string & mode);
+
+	virtual virtIO_t& operator>>(void* Buf);
+	virtual virtIO_t& operator<<(const void* Buf);
 
 
 	virtual virtIO_t& operator>>(char) = 0;
@@ -34,7 +41,13 @@ protected:
 
 private:
 	binIO_t(const binIO_t &); //we don't suport copying
+	binIO_t& operator=(const binIO_t &); //we don't suport copying
 
 };
 
 
+
+
+
+
+#endif

@@ -72,44 +72,14 @@ size_t virtIO_t::write(const void* buffer, size_t size, size_t count)
 	return write_n;
 }
 
-string virtIO_t::get_path() const
-{
-	return path_m;
-}
 
-
-string virtIO_t::get_access() const
-{
-	return mode_m;
-}
-
-size_t virtIO_t::get_length() const
-{
-	return length_m;
-}
-
-virtIO_t::status_t virtIO_t::get_status() const
-{
-	return status_m;
-}
-
-void virtIO_t:: set_length(size_t len)
-{
-	length_m = len;
-}
-
-FILE * virtIO_t::get_file()
-{
-	return file;
-}
-
-void* virtIO_t::operator>>(void* buf)
+virtIO_t& virtIO_t::operator>>(void* buf)
 {
 	left = false;
 	buff_pointer_read = buf;
 }
 
-const void* virtIO_t::operator<<(const void* buf)
+virtIO_t& virtIO_t::operator<<(const void* buf)
 {
 	left = true;
 	buff_pointer_write = buf;
