@@ -65,15 +65,15 @@ size_t virtIO_t::read(void* buffer, size_t size, size_t count)
 	
 	if (ferror(file))
 	{
+		set_status(bad_access_e);
 		// YOSSI told in the forum to throw exception as well
 		throw exception("Error:bad_access_e");
-		set_status(bad_access_e);
 	}
 	else if (read_n != count)
 	{
+		set_status(writeErr_e);
 		// YOSSI told in the forum to throw exception as well
 		throw exception("Error:writeErr_e");
-		set_status(writeErr_e);
 	}
 
 	else
@@ -96,15 +96,15 @@ size_t virtIO_t::write(const void* buffer, size_t size, size_t count)
 	int write_n = fwrite(buffer, size, count, file);
 	if (ferror(file))
 	{
+		set_status(bad_access_e);
 		// YOSSI told in the forum to throw exception as well
 		throw exception("Error:bad_access_e");
-		set_status(bad_access_e);
 	}
 	else if (write_n != count)
 	{
+		set_status(writeErr_e);
 		// YOSSI told in the forum to throw exception as well
 		throw exception("Error:writeErr_e");
-		set_status(writeErr_e);
 	}
 	else
  	{

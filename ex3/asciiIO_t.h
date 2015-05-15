@@ -63,15 +63,15 @@ template <class T> void asciiIO_t::write_file_with_format(const string& format, 
 	int result = fprintf(this->get_file(), format.c_str(), value);
 	if (ferror(get_file()))
 	{
+		set_status(virtIO_t::bad_access_e);
 		// YOSSI told in the forum to throw exception as well
 		throw exception("Error:bad_access_e");
-		set_status(virtIO_t::bad_access_e);
 	}
 	if (result < 1)
 	{
+		this->set_status(virtIO_t::writeErr_e);
 		// YOSSI told in the forum to throw exception as well
 		throw exception("Error:writeErr_e");
-		this->set_status(virtIO_t::writeErr_e);
 	}
 
 	else
