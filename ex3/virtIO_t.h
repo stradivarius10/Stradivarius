@@ -14,10 +14,11 @@ public:
 		ok_e ,cant_open_file_e,bad_access_e, writeErr_e ,readErr_e 
 	};
 
+	// this function also closes the file
 	virtual ~virtIO_t();
-	virtIO_t(); // default constructor
 
-	// the file won't be open till the user cas the open function
+	// if a defutl construsetctor is used, then you must call open before using the other members function (except dtor) - agreed by YOSSI
+	virtIO_t(); // default constructor
 	virtIO_t(const string &path, const string & mode); 
 
 
@@ -29,8 +30,8 @@ public:
 	inline status_t get_status() const;
 
 
-	//returns the length of the file and also updates the field
-	size_t get_length();
+	//returns the length of the file
+	size_t get_length() const;
 	
 
 	inline size_t read(void* buffer, size_t size, size_t count) ;
@@ -40,6 +41,7 @@ public:
 	//get the position - ftell
 	inline long get_position() const;
 	// fseek
+	// returns 0 is succeed!
 	inline bool set_position(int pos);
 
 	// set the right buffer. , will do the actual operation
@@ -70,15 +72,13 @@ public:
 	virtual virtIO_t& operator>>(double &c) = 0;
 	virtual virtIO_t& operator<<( double c) = 0;
 
-
-
-
-
+	// flush returns 0 if sccueeded
+	inline bool flush() const;
 
 protected:
 	inline void set_length(size_t len);
 	inline FILE * get_file();
-	inline bool is_file_initialized();
+	inline bool is_file_initialized() const;
 	inline void set_status(status_t status);
 
 private:
@@ -116,6 +116,7 @@ inline string virtIO_t::get_path() const
 
 inline string virtIO_t::get_access() const
 {
+
 	return mode_m;
 }
 
@@ -123,6 +124,7 @@ inline string virtIO_t::get_access() const
 
 inline virtIO_t::status_t virtIO_t::get_status() const
 {
+
 	return status_m;
 }
 
@@ -133,11 +135,16 @@ inline void virtIO_t::set_length(size_t len)
 
 inline FILE * virtIO_t::get_file()
 {
+	if (!is_file_initialized())
+	{
+		throw exception(" The file wasn't initialized ");
+	}
+
 	return file;
 }
 
 
-inline bool virtIO_t::is_file_initialized()
+inline bool virtIO_t::is_file_initialized() const
 {
 	return is_initialized;
 }
@@ -145,6 +152,10 @@ inline bool virtIO_t::is_file_initialized()
 
 inline long virtIO_t::get_position() const
 {
+	if (!is_file_initialized())
+	{
+		throw exception(" The file wasn't initialized ");
+	}
 	return ftell(file);
 }
 
@@ -152,7 +163,8 @@ inline long virtIO_t::get_position() const
 
 inline bool virtIO_t::set_position(int pos)
 {
-	int result  =  fseek( this->file, pos, SEEK_SET) == 0;
+	// will throw exception is file doesn't exists!
+	int result  =  fseek(get_file(), pos, SEEK_SET);
 	return result == 0;
 
 }
@@ -173,5 +185,20 @@ inline virtIO_t& virtIO_t::operator<<(const void* buf)
 
 	return *this;
 }
+
+
+inline bool virtIO_t::flush() const
+{
+	if (!is_file_initialized())
+	{
+		throw exception(" The file wasn't initialized ");
+	}
+	FILE *file_m = this->file;
+	int result = fflush(file_m);
+	return result == 0;
+
+}
+
+
 
 #endif
