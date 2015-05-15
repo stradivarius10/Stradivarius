@@ -25,7 +25,7 @@ size_t virtIO_t::get_length() const
 	fseek(file, 0, SEEK_END); 
 	size_t result = ftell(file);
 	// rewind..
-	fseek(file, old_position, SEEK_CUR);  
+	fseek(file, old_position, SEEK_SET);  
 
 	return result;
 }
@@ -98,7 +98,7 @@ size_t virtIO_t::write(const void* buffer, size_t size, size_t count)
 	{
 		set_status(bad_access_e);
 		// YOSSI told in the forum to throw exception as well
-		throw exception("Error:bad_access_e");
+		throw exception("Error:bad_access_e. Make sure you use the correct read and write semantics.");
 	}
 	else if (write_n != count)
 	{

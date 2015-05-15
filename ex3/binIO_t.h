@@ -154,13 +154,13 @@ inline virtIO_t& binIO_t::operator<< (long c)
 
 inline virtIO_t& binIO_t::operator >> (float& c) 
 {
-	read(&c, sizeof(long), 1);
+	read(&c, sizeof(float), 1);
 	return *this;
 }
 
 inline virtIO_t& binIO_t::operator<< (float c)
 {
-	write(&c, sizeof(char), 1);
+	write(&c, sizeof(float), 1);
 	return *this;
 }
 

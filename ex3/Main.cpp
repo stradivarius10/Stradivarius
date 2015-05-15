@@ -14,7 +14,7 @@ static string get_path()
 static string get_mode()
 {
 	string mode;
-	cout << "Enter the mode of your file:" << endl;
+	cout << "Enter the mode of your file: can be a+ or r, w  for example." << endl;
 	cin >> mode;
 	return mode;
 }
@@ -264,7 +264,6 @@ static void test(char file_type)
 
 	path = get_path();
 	mode = get_mode();
-
 	if (file_type == 'a')
 	{
 		file = new asciiIO_t(path, mode);
