@@ -72,17 +72,15 @@ public:
 	virtual virtIO_t& operator>>(double &c) = 0;
 	virtual virtIO_t& operator<<( double c) = 0;
 
-	// flush returns 0 if sccueeded
+	// flush returns 0 if sccueeded - no requirment in the Ex but we prefer to provide beucase the user needs it..
 	inline bool flush() const;
 
 protected:
-	inline void set_length(size_t len);
 	inline FILE * get_file();
 	inline bool is_file_initialized() const;
 	inline void set_status(status_t status);
 
 private:
-	size_t length_m;
 	string mode_m;
 	string path_m;
 	status_t status_m;
@@ -93,8 +91,8 @@ private:
 	FILE * file; //the "real" file..
 
 	bool input; //true if we want opertor<<, false if we want opertor>>
-    void *buff_pointer_read;
-    const void *buff_pointer_write;
+    void *buff_pointer_read; //we will write to this buffer if needed
+    const void *buff_pointer_write; //we will read form this buffer if needed 
 
 	virtIO_t(const virtIO_t &); //we don't suport copying
 	virtIO_t& operator=(const virtIO_t &); //we don't suport copying
@@ -116,7 +114,6 @@ inline string virtIO_t::get_path() const
 
 inline string virtIO_t::get_access() const
 {
-
 	return mode_m;
 }
 
@@ -128,10 +125,6 @@ inline virtIO_t::status_t virtIO_t::get_status() const
 	return status_m;
 }
 
-inline void virtIO_t::set_length(size_t len)
-{
-	length_m = len;
-}
 
 inline FILE * virtIO_t::get_file()
 {

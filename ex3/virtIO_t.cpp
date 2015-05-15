@@ -16,10 +16,16 @@ virtIO_t::virtIO_t():buff_pointer_write(NULL), buff_pointer_read(NULL)
 
 size_t virtIO_t::get_length() const
 {
+	// where told to use c standard functions of files!
+	if (!is_file_initialized())
+	{
+		throw exception(" The file wasn't initialized ");
+	}
+	size_t old_position = ftell(file);
 	fseek(file, 0, SEEK_END); 
 	size_t result = ftell(file);
 	// rewind..
-	fseek(file, 0, SEEK_CUR);  
+	fseek(file, old_position, SEEK_CUR);  
 
 	return result;
 }
@@ -59,10 +65,14 @@ size_t virtIO_t::read(void* buffer, size_t size, size_t count)
 	
 	if (ferror(file))
 	{
+		// YOSSI told in the forum to throw exception as well
+		throw exception("Error:bad_access_e");
 		set_status(bad_access_e);
 	}
 	else if (read_n != count)
 	{
+		// YOSSI told in the forum to throw exception as well
+		throw exception("Error:writeErr_e");
 		set_status(writeErr_e);
 	}
 
@@ -86,10 +96,14 @@ size_t virtIO_t::write(const void* buffer, size_t size, size_t count)
 	int write_n = fwrite(buffer, size, count, file);
 	if (ferror(file))
 	{
+		// YOSSI told in the forum to throw exception as well
+		throw exception("Error:bad_access_e");
 		set_status(bad_access_e);
 	}
 	else if (write_n != count)
 	{
+		// YOSSI told in the forum to throw exception as well
+		throw exception("Error:writeErr_e");
 		set_status(writeErr_e);
 	}
 	else

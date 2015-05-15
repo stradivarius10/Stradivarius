@@ -38,9 +38,6 @@ public:
 	virtual virtIO_t& operator<<(double c);
 
 
-protected:
-
-
 private:
 	asciiIO_t(const asciiIO_t &); //we don't suport copying
 	asciiIO_t& operator=(const asciiIO_t&); //we don't suport copying
@@ -66,10 +63,14 @@ template <class T> void asciiIO_t::write_file_with_format(const string& format, 
 	int result = fprintf(this->get_file(), format.c_str(), value);
 	if (ferror(get_file()))
 	{
+		// YOSSI told in the forum to throw exception as well
+		throw exception("Error:bad_access_e");
 		set_status(virtIO_t::bad_access_e);
 	}
 	if (result < 1)
 	{
+		// YOSSI told in the forum to throw exception as well
+		throw exception("Error:writeErr_e");
 		this->set_status(virtIO_t::writeErr_e);
 	}
 

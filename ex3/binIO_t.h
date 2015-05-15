@@ -10,7 +10,7 @@ public:
 	// base is suffice
 	virtual ~binIO_t(){}
 
-	binIO_t();
+	binIO_t(){}
 	binIO_t::binIO_t(const string &path, const string & mode) :
 	virtIO_t(path, mode)  {}
 
@@ -68,14 +68,14 @@ inline virtIO_t& binIO_t::operator<< (const char c)
 
 inline virtIO_t& binIO_t::operator >> (unsigned char& c)
 {
-	read(&c, sizeof(char), 1);
+	read(&c, sizeof(unsigned char), 1);
 	return *this;
 }
 
 
 inline virtIO_t& binIO_t::operator<< (unsigned char c) 
 {
-	write(&c, sizeof(char), 1);
+	write(&c, sizeof(unsigned char), 1);
 	return *this;
 }
 
@@ -96,14 +96,14 @@ inline virtIO_t& binIO_t::operator<< (short c)
 
 inline virtIO_t& binIO_t::operator >> (unsigned short& c) 
 {
-	read(&c, sizeof(short), 1);
+	read(&c, sizeof(unsigned short), 1);
 	return *this;
 }
 
 
 inline virtIO_t& binIO_t::operator<< (unsigned short c) 
 {
-	write(&c, sizeof(short), 1);
+	write(&c, sizeof(unsigned short), 1);
 	return *this;
 }
 
@@ -125,14 +125,14 @@ inline virtIO_t& binIO_t::operator<< (int c)
 
 inline virtIO_t& binIO_t::operator >> (unsigned int& c) 
 {
-	read(&c, sizeof(int), 1);
+	read(&c, sizeof(unsigned int), 1);
 	return *this;
 }
 
 
 inline virtIO_t& binIO_t::operator<< (unsigned int c) 
 {
-	write(&c, sizeof(int), 1);
+	write(&c, sizeof(unsigned int), 1);
 	return *this;
 }
 
@@ -179,14 +179,14 @@ inline virtIO_t& binIO_t::operator<< (double c)
 
 inline virtIO_t& binIO_t::operator >> (unsigned long &c)
 {
-	read(&c, sizeof(long), 1);
+	read(&c, sizeof(unsigned long), 1);
 	return *this;
 }
 
 
 inline virtIO_t& binIO_t::operator<< (unsigned long c)
 {
-	write(&c, sizeof(long), 1);
+	write(&c, sizeof(unsigned long), 1);
 	return *this;
 }
 
