@@ -147,7 +147,8 @@ static void write_data(virtIO_t * file)
 	}
 	catch (exception &e)
 	{
-		cout << e.what() << endl;
+		string err_msg(e.what());
+		cout << err_msg + ". Check status!" << endl;
 	}
 }
 
@@ -247,7 +248,8 @@ static void read_data(virtIO_t * file)
 	}
 	catch (exception &e)
 	{
-		cout << e.what() << endl;
+		string err_msg(e.what());
+		cout << err_msg+". Check status!" << endl;
 		delete buffer;
 	}
 }
@@ -258,6 +260,7 @@ static void test(char file_type)
 	string path, mode;
 	char c;
 	long position;
+	int status;
 
 	path = get_path();
 	mode = get_mode();
@@ -270,6 +273,11 @@ static void test(char file_type)
 	else if (file_type == 'b')
 	{
 		file = new binIO_t(path, mode);
+	}
+
+	if (file->get_status() != virtIO_t::ok_e)
+	{
+		cout << "Error in openning the file. Check status!" << endl;
 	}
 
 	bool cont = true;
@@ -286,6 +294,7 @@ static void test(char file_type)
 				<< "press s to get the status of the file" << endl
 				<< "Press x to get the position in the file"<<endl
 				<< "Press y to set the position in the file" << endl
+				<< "Press f to flush the file" << endl
 				<< "press any other character to exit" << endl;
 
 
@@ -295,13 +304,40 @@ static void test(char file_type)
 			case 'p':cout << file->get_path(); break;
 			case 'a':cout << file->get_access(); break;
 			case 'l':cout << file->get_length(); break;
-			case 's':cout << file->get_status(); break;
+			case 's':
+				status = file->get_status();
+				switch (status)
+				{
+				case virtIO_t::ok_e:
+					cout << "Ok" << endl;
+					break;
+				case virtIO_t::bad_access_e:
+					cout << "Bad access" << endl;
+					break;
+				case virtIO_t::cant_open_file_e:
+					cout << "Cannot open file" << endl;
+					break;
+				case virtIO_t::readErr_e:
+					cout << "Read error" << endl;
+					break;
+				case virtIO_t::writeErr_e:
+					cout << "Write error" << endl;
+					break;
+				default:
+					break;
+				}
+				break;
 			case 'r':read_data(file); break;
 			case 'w':write_data(file); break;
 			case 'x':cout << file->get_position(); break;
 			case 'y':cout << "Enter long:";
 				cin >> position;
-				file->set_position(position);
+				if (!file->set_position(position))	//error setting the position
+					cout << "Error! cannot set the position!" << endl;
+				break;
+			case 'f':
+				if (!file->flush())
+					cout << "Error in flush. Check status!" << endl;
 				break;
 
 			default: cont = false; break;
@@ -311,10 +347,17 @@ static void test(char file_type)
 		//freeing memory
 		delete file;
 	}
+
+	catch (exception &e)
+	{
+		string err_msg(e.what());
+		cout << err_msg + ". Check status!" << endl;
+		delete file;
+	}
 	//catch any exception
 	catch (...)
 	{
-		cout << "Some error was occured. Fatal error!" << endl;
+		cout << "Some error was occured. Fatal error!. Check also the status!" << endl;
 		//freeing memory
 		delete file;
 	}
