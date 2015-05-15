@@ -56,15 +56,16 @@ size_t virtIO_t::read(void* buffer, size_t size, size_t count)
 		throw exception(" The file wasn't initialized ");
 	}
 	int read_n = fread(buffer, size, count, file);
-
-	if (read_n != count)
-	{
-		set_status(writeErr_e);
-	}
-	else if (ferror(file))
+	
+	if (ferror(file))
 	{
 		set_status(bad_access_e);
 	}
+	else if (read_n != count)
+	{
+		set_status(writeErr_e);
+	}
+
 	else
 	{
 		status_m = ok_e;
@@ -83,13 +84,13 @@ size_t virtIO_t::write(const void* buffer, size_t size, size_t count)
 	}
 
 	int write_n = fwrite(buffer, size, count, file);
-	if (write_n != count)
-	{
-		set_status(writeErr_e);
-	}
-	else if (ferror(file))
+	if (ferror(file))
 	{
 		set_status(bad_access_e);
+	}
+	else if (write_n != count)
+	{
+		set_status(writeErr_e);
 	}
 	else
  	{
@@ -103,7 +104,7 @@ size_t virtIO_t::write(const void* buffer, size_t size, size_t count)
 
 void  virtIO_t::operator,(int len)
 {
-	if (buff_pointer_write == NULL || buff_pointer_read == NULL)
+	if (buff_pointer_write == NULL && buff_pointer_read == NULL)
 	{
 		throw exception(" NO use of << or >> was occrued before calling to the , operator");
 	}

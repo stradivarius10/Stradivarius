@@ -58,7 +58,16 @@ private:
 template <class T> void asciiIO_t::write_file_with_format(const string& format, const T& value)
 {
 
+	if (!is_file_initialized())
+	{
+		throw exception(" The file wasn't initialized ");
+	}
+
 	int result = fprintf(this->get_file(), format.c_str(), value);
+	if (ferror(get_file()))
+	{
+		set_status(virtIO_t::bad_access_e);
+	}
 	if (result < 1)
 	{
 		this->set_status(virtIO_t::writeErr_e);
@@ -74,9 +83,9 @@ template <class T> void asciiIO_t::write_file_with_format(const string& format, 
 
 // inline implementation
 
-// inline implementation
 
 // Please note: I've asked Yossi nd he told me I don't have to use Templeate functions here though I could..
+// the read and write functions will throw exceptions and set the flag if needed!
 inline virtIO_t& asciiIO_t::operator >> (char & c)
 {
 	read_file_with_format("%c", &c);

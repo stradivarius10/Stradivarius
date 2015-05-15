@@ -11,8 +11,8 @@ public:
 	virtual ~binIO_t(){}
 
 	binIO_t();
-	binIO_t(const string &path, const string & mode);
-
+	binIO_t::binIO_t(const string &path, const string & mode) :
+	virtIO_t(path, mode)  {}
 
 	// since we are implementing other << we don't want to hide these
 	using virtIO_t::operator<<;
@@ -46,6 +46,7 @@ private:
 
 };
 
+// no cpp files since all implementations aare inline.. 
 
 // inline implementation
 
@@ -188,13 +189,6 @@ inline virtIO_t& binIO_t::operator<< (unsigned long c)
 	write(&c, sizeof(long), 1);
 	return *this;
 }
-
-
-
-
-
-
-
 
 
 
