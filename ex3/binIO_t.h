@@ -40,8 +40,6 @@ public:
 	virtual virtIO_t& operator<<(double c);
 
 
-protected:
-
 private:
 	binIO_t(const binIO_t &); //we don't suport copying
 	binIO_t& operator=(const binIO_t &); //we don't suport copying
@@ -52,6 +50,7 @@ private:
 // inline implementation
 
 // Please note: I've asked Yossi nd he told me I don't have to use Templeate functions here though I could..
+// the read and write functions will throw exceptions and set the flag if needed!
 inline virtIO_t& binIO_t::operator >> (char & c ) 
 {
 	read(&c, sizeof(char), 1);

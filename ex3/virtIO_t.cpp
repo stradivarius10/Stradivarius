@@ -57,9 +57,13 @@ size_t virtIO_t::read(void* buffer, size_t size, size_t count)
 	}
 	int read_n = fread(buffer, size, count, file);
 
-	if ( read_n !=  count)
+	if (read_n != count)
 	{
-		status_m = readErr_e;
+		set_status(writeErr_e);
+	}
+	else if (ferror(file))
+	{
+		set_status(bad_access_e);
 	}
 	else
 	{

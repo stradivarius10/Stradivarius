@@ -42,11 +42,12 @@ protected:
 
 
 private:
-	void read_file_with_format(const string& format,  const void * x);
 	asciiIO_t(const asciiIO_t &); //we don't suport copying
 	asciiIO_t& operator=(const asciiIO_t&); //we don't suport copying
 	//change status if it has problems... template so we can get the value witht he right type
 	template <class T> void write_file_with_format(const string& format, const T& value);
+	// in order to prevent code duplication! agreed and advised by YOSSI
+	void read_file_with_format(const string& format, const void * x);
 	
 
 };
