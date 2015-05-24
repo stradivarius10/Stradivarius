@@ -1,6 +1,6 @@
 #include <iostream>
 
-#define TEMPLATE_TEMPLATE //this is the default
+//#define TEMPLATE_TEMPLATE //this is the default
 #include "tContainer_t.h"
 #include <vector>
 #include <list>
@@ -9,6 +9,23 @@
 
 
 using namespace std;
+
+static size_t get_index()
+{
+	size_t index;
+	string tmp;
+
+	cout << "enter an index" << endl;
+	cin >> index;
+	while (cin.fail())
+	{
+		cout << "Some error occured. Please try again:" << endl;
+		cin.clear();
+		cin >> tmp; //remove all the word and try again
+		cin >> index;
+	}
+	return index;
+}
 
 template<class T> static T* get_elem_ptr()
 {
@@ -36,6 +53,7 @@ template<typename T, typename CT> static void test()
 	tContainer_t<T, CT> cont;
 	T* elem = nullptr;
 	T* elem_from_cont = nullptr;
+	size_t index;
 	bool cont_flag = true;
 	while (cont_flag) {
 		cout << "Press f to find an element" << endl
@@ -48,6 +66,8 @@ template<typename T, typename CT> static void test()
 			<< "Press D to remove all values from cont with delete" << endl
 			<< "press a to get the first element" << endl
 			<< "press b to get the last element" << endl
+			<< "press t to get element at some index" << endl
+			<< "press n to insert element at some index" << endl
 			<< "press p to print all elements" << endl
 			<< "press any other character to exit" << endl;
 
@@ -100,6 +120,31 @@ template<typename T, typename CT> static void test()
 		case 'i':
 			elem = get_elem_ptr<T>();
 			cont.insert(elem);
+			break;
+		case 't':
+			index = get_index();
+			if (index >= cont.get_size())
+			{
+				cout << "Invalid index" << endl;
+			}
+			else
+			{
+				const T* elem_2;
+				elem_2= cont[index];
+				cout << *elem << endl;
+			}
+			break;
+		case 'n':
+			index = get_index();
+			if (index >= cont.get_size())
+			{
+				cout << "Invalid index" << endl;
+			}
+			else
+			{
+				elem = get_elem_ptr<T>();
+				cont[index] = elem;
+			}
 			break;
 		case 'r':
 			elem = get_elem_ptr<T>();

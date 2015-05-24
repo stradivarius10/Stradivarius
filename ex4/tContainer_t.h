@@ -1,27 +1,23 @@
 #ifndef TCONTAINER_T
 #define TCONTAINER_T
 
-//#define TEMPLATE_TEMPLALTE //we take this option as the default one
-
 #include <vector>
 #include <algorithm>
-#include<iostream>
+#include <iostream>
+#include <typeinfo>
 
 
 using namespace std;
 
 #ifdef TEMPLATE_TEMPLATE
-#define prefix_function  template<typename T, template <typename, typename> class CT> 
-template <typename T, template <typename, typename> class CT > class tContainer_t
+#define prefix_function  template<class T, template <typename, typename> class CT> 
+template <class T, template <typename, typename> class CT > class tContainer_t
 
 
 #else
-#define prefix_function  template <typename T, typename CT > 
+#define prefix_function  template <class T, class CT > 
 
-// forward decleration
-//prefix_function ostream& operator<<(ostream& os, const tContainer_t<T, CT> & cont);
-//should it be type name in here??????
-template <typename T, typename CT > class tContainer_t
+template <class T, class CT > class tContainer_t
 
 
 #endif
@@ -29,81 +25,61 @@ template <typename T, typename CT > class tContainer_t
 {
 
 
-	// not asked but we added..
-	prefix_function friend ostream& operator<<(ostream& os, const tContainer_t<T, CT> & cont);
-	/*
-	friend ostream& operator<<(ostream& os, const tContainer_t<T,CT> & cont)
-	{
-		const_iter_t it; /// const??????????????????
-
-		for (it = cont.cont_m.begin(); it != cont.cont_m.end(); it++)
-		{
-			os << **it << endl;
-		}
-		return os;
-	}
-	*/
-
-
 public:
-	virtual ~tContainer_t();
-	tContainer_t(); 
+	 ~tContainer_t();// YOSSI told us in the forum that we should not support inheritence and agreed that the destructor would be not virtual to prevent such case
+	 tContainer_t();  
 
-
+	 // - return true/false according to is container is  empty or not
 	 inline bool is_empty() const;
+	 // return number of elements in array
 	 inline size_t get_size() const;
-	 inline void insert(T * element);
+	 //- insert a new element in the end of array
+	 inline void insert(T * element); // ????????????????????????????????? name
+	 //return first element in container
 	 inline T* get_first() const;
+	 //return last  element in container
 	 inline T* get_last() const;
+	 //- find specific element by value
 	 T * find(const T & elem) const;
+	 //remove specific element and returns pointer to it 
 	 T * remove(const T & elem);
+	 // all elements ( without deleting them )
 	 void remove_all();
+	 //- remove and delete specific element 
 	 void remove_and_delete(const T & elem);
+	 //- remove and delete all elements 
 	 void remove_delete_all();
 
 	 
 
-
-
-	 T * & operator[] (size_t index); //assign ????????????????????????
-	 T * operator[] (size_t index) const; /////?????????
+	 T * & operator[] ( size_t index); //assign  - throws excpetion if out of bound
+	 T * operator[] (size_t index) const; // retrieve  -throws excpetion if out of bound
 
 private:
-	tContainer_t<T, CT>(const tContainer_t<T, CT>& container);// copy constructor
+	tContainer_t<T, CT>(const tContainer_t<T, CT>& container);// not allowing copy
+    tContainer_t<T, CT> &  operator=(const tContainer_t<T, CT> & container);// not allowing copy
 
-	/*The point of making an assignment operator virtual is to allow you from the benefit of being able to override it to copy more fields.*/
-    tContainer_t<T, CT> &  operator=(const tContainer_t<T, CT> & container);
+
+	// not asked but we added so it can be easy to debug and added functionality of printing to the test..
+	prefix_function friend ostream& operator<<(ostream& os, const tContainer_t<T, CT> & cont);
 
 
 #ifdef TEMPLATE_TEMPLATE
 
 	CT<T *,allocator<T *>> cont_m;
-	typedef typename CT<T*,allocator<T *>>::const_iterator const_iter_t; // why??????????????????????
-	typedef typename CT<T*,allocator<T *>>::iterator iter_t; // why??????????????????????
+	typedef typename CT<T*,allocator<T *>>::const_iterator const_iter_t;
+	typedef typename CT<T*,allocator<T *>>::iterator iter_t;
 #else
 
 
 	CT cont_m;
-	typedef typename CT::iterator iter_t; // why??????????????????????
-	typedef typename CT::const_iterator const_iter_t; // why??????????????????????
+	typedef typename CT::iterator iter_t; 
+	typedef typename CT::const_iterator const_iter_t;
 #endif
-
-	///// type???????
 
 
 
 };
-
-
-prefix_function ostream&  operator<<(ostream& os, const tContainer_t<T, CT> & cont)
-{
-	tContainer_t<T, CT>::const_iter_t it; /// const??????????????????
-	for (it = cont.cont_m.begin(); it != cont.cont_m.end(); it++)
-	{
-		os << **it << endl;
-	}
-	return os;
-}
 
 
 prefix_function  tContainer_t<T, CT>:: ~tContainer_t(){}
@@ -122,7 +98,8 @@ prefix_function size_t  tContainer_t<T, CT>::get_size() const
 
 prefix_function void  tContainer_t<T, CT>::insert(T * element)
 {
-	cont_m.insert(cont_m.end(), element); //not catching the iterator
+	//cont_m.insert(cont_m.end(), element); //not catching the iterator
+	cont_m.push_back(element);
 }
 
 
@@ -130,7 +107,8 @@ prefix_function T *  tContainer_t<T, CT>::get_first() const
 {
 	if (is_empty())
 	{
-		return nullptr; /// echecko!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return nullptr; //cehck itttttttttt
+		// in [] check and throw exception!!!
 	}
 	else
 	{
@@ -142,7 +120,7 @@ prefix_function T *  tContainer_t<T, CT>::get_last() const
 {
 	if (is_empty())
 	{
-		return nullptr; /// echecko!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return nullptr;
 	}
 	else
 	{
@@ -155,7 +133,6 @@ prefix_function void  tContainer_t<T, CT>::remove_and_delete(const T & elem)
 
 	T * elem_found = remove(elem);
 
-	//ask!!!!!!!!!!!!!!!!!!
 	if (elem_found == 0)
 	{
 		throw exception("No such element was found");
@@ -170,8 +147,6 @@ prefix_function void  tContainer_t<T, CT>::remove_and_delete(const T & elem)
 
 prefix_function T *  tContainer_t<T, CT>::find(const T & elem) const
 {
-	//tContainer_t<T, CT>::iter_t it;
-
 	const_iter_t elem_found = find_if(cont_m.begin(), cont_m.end(), compare<T>(elem));
 
 	if (elem_found != cont_m.end())
@@ -185,33 +160,14 @@ prefix_function T *  tContainer_t<T, CT>::find(const T & elem) const
 }
 
 
-
-////////??????????????
 prefix_function T *  tContainer_t<T, CT>::remove(const T & elem)
 {
-//	tContainer_t<T, CT>::iter_t it;
 
-	/*
-	//check it out!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	for (it = cont_m.begin(); it < cont_m.end(); it++)
-	{
-		// we assume the T class implenets  the == operator ..
-		if ((*it) == T)
-		{
-			T* result = &(*it);// ???????????????????????????????
-			cont_m.erase(it); //becuase it's a ponter then the destructor is not called!!!!!!!
-			return  result;
-		}
-
-	}
-	*/
-	//// shichpul code????
-	const_iter_t elem_found = find_if(cont_m.begin(), cont_m.end(), compare<T>(elem));
-
+	iter_t elem_found = find_if(cont_m.begin(), cont_m.end(), compare<T>(elem));
 	if (elem_found != cont_m.end())
 	{
 		T * result = *elem_found;
-		cont_m.erase(elem_found);  ///???????? check
+		cont_m.erase(elem_found); 
 		return result;
 	}
 	else
@@ -229,49 +185,60 @@ prefix_function void  tContainer_t<T, CT>::remove_all()
 
 prefix_function void  tContainer_t<T, CT>::remove_delete_all()
 {
-	//tContainer_t<T, CT>::iter_t it;
-	const_iter_t it; /// const??????????????????
-	//it = cont_m.begin();
-	//it++;
-	//bool x = it < cont_m.end();
+
+	iter_t it; 
 	for (it = cont_m.begin(); it != cont_m.end(); it++)
 	{
 		delete (*it);
 	}
 
-	remove_all(); //remove all elements but not destryong them.
+	remove_all(); //remove all elements but not destryong them (we have already destroyed them..).
 
 }
 
 
-prefix_function  T * &  tContainer_t<T, CT>::operator[] (size_t index)
+prefix_function  T * &  tContainer_t<T, CT>::operator[] ( size_t index)
 {
-	if (typeid(cont_m) == typeid(vector<T*>)) //vector has already implemented the [] operator so we can use it
+	if (index >= cont_m.size())
 	{
-		return ((vector<T*> )cont_m)[index]; // ??????????? reference
+		throw exception("Index is out of bound!");
 	}
 
-	else if (typeid(cont_m) == typeid(list<T*>))
+	if (typeid(cont_m) == typeid(vector<T*>)) //vector has already implemented the [] operator so we can use it
+	{
+		//vector<T*, allocator<T*>> *temp = reinterpret_cast <vector<T*, allocator<T*>> * >(&cont_m);
+		vector<T*, allocator<T*>> *temp = (vector<T*, allocator<T*>> *)(&cont_m);
+		return  (*temp)[index]; 
+	}
+	//else if (typeid(cont_m) == typeid(list<T*>))
+	else
 	{
 		//tContainer_t<T, CT>::iter_t it = cont_m.begin();
-		const_iter_t it = cont_m.begin();
+		iter_t it = cont_m.begin();
 		advance(it, index);
 		return *it;
 		
 	}
+	//return NULL;
 }
 
 
 
-// shicpul code????????????????????
-prefix_function T *   tContainer_t<T, CT>::operator[] (size_t index) const
+prefix_function  T *   tContainer_t<T, CT>::operator[] ( size_t index) const
 {
-	if (typeid(cont_m) == typeid(vector<T*>)) //vector has already implemented the [] operator so we can use it
+	if (index >= cont_m.size())
 	{
-		return ((vector<T*>)cont_m)[index];
+		throw exception("Index is out of bound!");
 	}
 
-	else if (typeid(cont_m) == typeid(list<T*>))
+	if (typeid(cont_m) == typeid(vector<T*>)) //vector has already implemented the [] operator so we can use it
+	{
+	//	vector<T*, allocator<T*>> *temp = reinterpret_cast <vector<T*, allocator<T*>> * >(&cont_m);
+		vector<T*, allocator<T*>> *temp = (vector<T*, allocator<T*>> *)(&cont_m);
+		return  (*temp)[index]; // ??????????? reference
+	}
+	//else if (typeid(cont_m) == typeid(list<T*>))
+	else //list - YOSSI told us that there only 2 options - list or vector!
 	{
 		//tContainer_t<T, CT>::iter_t it = cont_m.begin();
 		const_iter_t it = cont_m.begin();
@@ -280,6 +247,19 @@ prefix_function T *   tContainer_t<T, CT>::operator[] (size_t index) const
 
 	}
 }
+
+
+
+prefix_function ostream&  operator<<(ostream& os, const tContainer_t<T, CT> & cont)
+{
+	tContainer_t<T, CT>::const_iter_t it;
+	for (it = cont.cont_m.begin(); it != cont.cont_m.end(); it++)
+	{
+		os << **it << endl ;
+	}
+	return os;
+}
+
 
 
 
@@ -289,13 +269,13 @@ prefix_function T *   tContainer_t<T, CT>::operator[] (size_t index) const
 
 template <class T> struct compare
 {
-	compare(T val) : first_val(val){}; //default constructor = used to retreive the first element to compare with
+	compare(const T &val) : first_val(val){}; //default constructor = used to retreive the first element to compare with
 
-	bool operator()(T* second_val) const { return *second_val == first_val; } //we assume the T class has implemented the correct == operator
+	bool operator()(const T* second_val) const { return *second_val == first_val; } //we assume the T class has implemented the correct == operator
 
 
 private:
-	T first_val;
+	const T &first_val;
 };
 
 
