@@ -1,6 +1,6 @@
 #include <iostream>
 
-//#define TEMPLATE_TEMPLATE //this is the default
+#define TEMPLATE_TEMPLATE //this is the default
 #include "tContainer_t.h"
 #include <vector>
 #include <list>
@@ -188,7 +188,6 @@ template<typename T, typename CT> static void test()
 
 	cont.remove_delete_all();
 	//freeing memory
-	//delete cont;
 }
 
 int main()
@@ -197,7 +196,7 @@ int main()
 	bool finish = false;
 	while (!finish)
 	{
-		cout << "Press v or l to choose vector or list (elements are of type int) :" << endl;
+		cout << "Press v or l to choose vector or list (elements are of type int - agreed by YOSSI in the forum) :" << endl;
 		cin >> c;
 
 		switch (c)

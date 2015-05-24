@@ -39,15 +39,15 @@ public:
 	 inline T * remove(const T & elem);
 	 // all elements ( without deleting them )
 	 inline void remove_all();
-	 //- remove and delete specific element 
+	 //- remove and delete specific element
 	 inline void remove_and_delete(const T & elem);
 	 //- remove and delete all elements 
-	 void remove_delete_all();
+	 inline void remove_delete_all();
 
 	 
 
-	 T * & operator[] ( size_t index); //assign  - throws excpetion if out of bound
-	 T * operator[] (size_t index) const; // retrieve  -throws excpetion if out of bound
+	 inline T * & operator[] ( size_t index); //assign  - throws excpetion if out of bound
+	 inline T * operator[] (size_t index) const; // retrieve  -throws excpetion if out of bound
 
 private:
 	tContainer_t<T, CT>(const tContainer_t<T, CT>& container);// not allowing copy
@@ -65,13 +65,10 @@ private:
 	typedef typename CT<T*,allocator<T *>>::iterator iter_t;
 #else
 
-
 	CT cont_m;
 	typedef typename CT::iterator iter_t; 
 	typedef typename CT::const_iterator const_iter_t;
 #endif
-
-
 
 };
 
@@ -80,23 +77,23 @@ PREFIX_TEMPLATE  tContainer_t<T, CT>:: ~tContainer_t(){}
 
 PREFIX_TEMPLATE  tContainer_t<T, CT>::tContainer_t(){}
 
-PREFIX_TEMPLATE bool  tContainer_t<T, CT>::is_empty() const
+PREFIX_TEMPLATE inline bool  tContainer_t<T, CT>::is_empty() const
 {
 	return cont_m.empty();
 }
 
-PREFIX_TEMPLATE size_t  tContainer_t<T, CT>::get_size() const
+PREFIX_TEMPLATE inline size_t  tContainer_t<T, CT>::get_size() const
 {
 	return cont_m.size();
 }
 
-PREFIX_TEMPLATE void  tContainer_t<T, CT>::insert(T * element)
+PREFIX_TEMPLATE inline void  tContainer_t<T, CT>::insert(T * element)
 {
 	cont_m.push_back(element);
 }
 
 
-PREFIX_TEMPLATE T *  tContainer_t<T, CT>::get_first() const
+PREFIX_TEMPLATE inline T *  tContainer_t<T, CT>::get_first() const
 {
 	if (is_empty())
 	{
@@ -109,7 +106,7 @@ PREFIX_TEMPLATE T *  tContainer_t<T, CT>::get_first() const
 	}
 }
 
-PREFIX_TEMPLATE T *  tContainer_t<T, CT>::get_last() const
+PREFIX_TEMPLATE inline T *  tContainer_t<T, CT>::get_last() const
 {
 	if (is_empty())
 	{
@@ -121,7 +118,7 @@ PREFIX_TEMPLATE T *  tContainer_t<T, CT>::get_last() const
 	}
 }
 
-PREFIX_TEMPLATE void  tContainer_t<T, CT>::remove_and_delete(const T & elem)
+PREFIX_TEMPLATE inline void  tContainer_t<T, CT>::remove_and_delete(const T & elem)
 {
 
 	T * elem_found = remove(elem);
@@ -138,7 +135,7 @@ PREFIX_TEMPLATE void  tContainer_t<T, CT>::remove_and_delete(const T & elem)
 }
 
 
-PREFIX_TEMPLATE T *  tContainer_t<T, CT>::find(const T & elem) const
+PREFIX_TEMPLATE inline T *  tContainer_t<T, CT>::find(const T & elem) const
 {
 	const_iter_t elem_found = find_if(cont_m.begin(), cont_m.end(), comparator<T>(elem));
 
@@ -153,7 +150,7 @@ PREFIX_TEMPLATE T *  tContainer_t<T, CT>::find(const T & elem) const
 }
 
 
-PREFIX_TEMPLATE T *  tContainer_t<T, CT>::remove(const T & elem)
+PREFIX_TEMPLATE inline T *  tContainer_t<T, CT>::remove(const T & elem)
 {
 
 	const_iter_t elem_found = find_if(cont_m.begin(), cont_m.end(), comparator<T>(elem));
@@ -170,13 +167,13 @@ PREFIX_TEMPLATE T *  tContainer_t<T, CT>::remove(const T & elem)
 	
 }
 
-PREFIX_TEMPLATE void  tContainer_t<T, CT>::remove_all()
+PREFIX_TEMPLATE inline void  tContainer_t<T, CT>::remove_all()
 {
 	cont_m.clear();
 }
 
 
-PREFIX_TEMPLATE void  tContainer_t<T, CT>::remove_delete_all()
+PREFIX_TEMPLATE inline void  tContainer_t<T, CT>::remove_delete_all()
 {
 
 	iter_t it; 
@@ -190,7 +187,7 @@ PREFIX_TEMPLATE void  tContainer_t<T, CT>::remove_delete_all()
 }
 
 
-PREFIX_TEMPLATE  T * &  tContainer_t<T, CT>::operator[] ( size_t index)
+PREFIX_TEMPLATE inline  T * &  tContainer_t<T, CT>::operator[] (size_t index)
 {
 	if (index >= cont_m.size())
 	{
@@ -213,7 +210,7 @@ PREFIX_TEMPLATE  T * &  tContainer_t<T, CT>::operator[] ( size_t index)
 
 
 
-PREFIX_TEMPLATE  T *   tContainer_t<T, CT>::operator[] ( size_t index) const
+PREFIX_TEMPLATE inline  T *   tContainer_t<T, CT>::operator[] (size_t index) const
 {
 	if (index >= cont_m.size())
 	{
