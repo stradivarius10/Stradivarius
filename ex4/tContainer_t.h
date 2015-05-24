@@ -5,26 +5,20 @@
 #include <algorithm>
 #include <iostream>
 #include <typeinfo>
+#include "Comparator.h"
 
 
 using namespace std;
 
 #ifdef TEMPLATE_TEMPLATE
-#define prefix_function  template<class T, template <typename, typename> class CT> 
-template <class T, template <typename, typename> class CT > class tContainer_t
-
+#define PREFIX_TEMPLATE  template<class T, template <typename, typename> class CT> 
 
 #else
-#define prefix_function  template <class T, class CT > 
-
-template <class T, class CT > class tContainer_t
-
+#define PREFIX_TEMPLATE  template <class T, class CT > 
 
 #endif
 
-{
-
-
+	PREFIX_TEMPLATE	class tContainer_t {
 public:
 	 ~tContainer_t();// YOSSI told us in the forum that we should not support inheritence and agreed that the destructor would be not virtual to prevent such case
 	 tContainer_t();  
@@ -34,19 +28,19 @@ public:
 	 // return number of elements in array
 	 inline size_t get_size() const;
 	 //- insert a new element in the end of array
-	 inline void insert(T * element); // ????????????????????????????????? name
+	 inline void insert(T * element);
 	 //return first element in container
 	 inline T* get_first() const;
 	 //return last  element in container
 	 inline T* get_last() const;
 	 //- find specific element by value
-	 T * find(const T & elem) const;
+	 inline T * find(const T & elem) const;
 	 //remove specific element and returns pointer to it 
-	 T * remove(const T & elem);
+	 inline T * remove(const T & elem);
 	 // all elements ( without deleting them )
-	 void remove_all();
+	 inline void remove_all();
 	 //- remove and delete specific element 
-	 void remove_and_delete(const T & elem);
+	 inline void remove_and_delete(const T & elem);
 	 //- remove and delete all elements 
 	 void remove_delete_all();
 
@@ -61,7 +55,7 @@ private:
 
 
 	// not asked but we added so it can be easy to debug and added functionality of printing to the test..
-	prefix_function friend ostream& operator<<(ostream& os, const tContainer_t<T, CT> & cont);
+	PREFIX_TEMPLATE friend ostream& operator<<(ostream& os, const tContainer_t<T, CT> & cont);
 
 
 #ifdef TEMPLATE_TEMPLATE
@@ -82,33 +76,32 @@ private:
 };
 
 
-prefix_function  tContainer_t<T, CT>:: ~tContainer_t(){}
+PREFIX_TEMPLATE  tContainer_t<T, CT>:: ~tContainer_t(){}
 
-prefix_function  tContainer_t<T, CT>::tContainer_t(){}
+PREFIX_TEMPLATE  tContainer_t<T, CT>::tContainer_t(){}
 
-prefix_function bool  tContainer_t<T, CT>::is_empty() const
+PREFIX_TEMPLATE bool  tContainer_t<T, CT>::is_empty() const
 {
 	return cont_m.empty();
 }
 
-prefix_function size_t  tContainer_t<T, CT>::get_size() const
+PREFIX_TEMPLATE size_t  tContainer_t<T, CT>::get_size() const
 {
 	return cont_m.size();
 }
 
-prefix_function void  tContainer_t<T, CT>::insert(T * element)
+PREFIX_TEMPLATE void  tContainer_t<T, CT>::insert(T * element)
 {
-	//cont_m.insert(cont_m.end(), element); //not catching the iterator
 	cont_m.push_back(element);
 }
 
 
-prefix_function T *  tContainer_t<T, CT>::get_first() const
+PREFIX_TEMPLATE T *  tContainer_t<T, CT>::get_first() const
 {
 	if (is_empty())
 	{
-		return nullptr; //cehck itttttttttt
-		// in [] check and throw exception!!!
+		return nullptr; //Agreed by YOSSI.
+	
 	}
 	else
 	{
@@ -116,11 +109,11 @@ prefix_function T *  tContainer_t<T, CT>::get_first() const
 	}
 }
 
-prefix_function T *  tContainer_t<T, CT>::get_last() const
+PREFIX_TEMPLATE T *  tContainer_t<T, CT>::get_last() const
 {
 	if (is_empty())
 	{
-		return nullptr;
+		return nullptr; //Agreed by YOSSI.
 	}
 	else
 	{
@@ -128,14 +121,14 @@ prefix_function T *  tContainer_t<T, CT>::get_last() const
 	}
 }
 
-prefix_function void  tContainer_t<T, CT>::remove_and_delete(const T & elem)
+PREFIX_TEMPLATE void  tContainer_t<T, CT>::remove_and_delete(const T & elem)
 {
 
 	T * elem_found = remove(elem);
 
 	if (elem_found == 0)
 	{
-		throw exception("No such element was found");
+		throw exception("No such element was found"); //agreed by YOSSI in the forum!
 	}
 	else
 	{
@@ -145,9 +138,9 @@ prefix_function void  tContainer_t<T, CT>::remove_and_delete(const T & elem)
 }
 
 
-prefix_function T *  tContainer_t<T, CT>::find(const T & elem) const
+PREFIX_TEMPLATE T *  tContainer_t<T, CT>::find(const T & elem) const
 {
-	const_iter_t elem_found = find_if(cont_m.begin(), cont_m.end(), compare<T>(elem));
+	const_iter_t elem_found = find_if(cont_m.begin(), cont_m.end(), comparator<T>(elem));
 
 	if (elem_found != cont_m.end())
 	{
@@ -160,10 +153,10 @@ prefix_function T *  tContainer_t<T, CT>::find(const T & elem) const
 }
 
 
-prefix_function T *  tContainer_t<T, CT>::remove(const T & elem)
+PREFIX_TEMPLATE T *  tContainer_t<T, CT>::remove(const T & elem)
 {
 
-	iter_t elem_found = find_if(cont_m.begin(), cont_m.end(), compare<T>(elem));
+	const_iter_t elem_found = find_if(cont_m.begin(), cont_m.end(), comparator<T>(elem));
 	if (elem_found != cont_m.end())
 	{
 		T * result = *elem_found;
@@ -177,13 +170,13 @@ prefix_function T *  tContainer_t<T, CT>::remove(const T & elem)
 	
 }
 
-prefix_function void  tContainer_t<T, CT>::remove_all()
+PREFIX_TEMPLATE void  tContainer_t<T, CT>::remove_all()
 {
 	cont_m.clear();
 }
 
 
-prefix_function void  tContainer_t<T, CT>::remove_delete_all()
+PREFIX_TEMPLATE void  tContainer_t<T, CT>::remove_delete_all()
 {
 
 	iter_t it; 
@@ -197,7 +190,7 @@ prefix_function void  tContainer_t<T, CT>::remove_delete_all()
 }
 
 
-prefix_function  T * &  tContainer_t<T, CT>::operator[] ( size_t index)
+PREFIX_TEMPLATE  T * &  tContainer_t<T, CT>::operator[] ( size_t index)
 {
 	if (index >= cont_m.size())
 	{
@@ -206,25 +199,21 @@ prefix_function  T * &  tContainer_t<T, CT>::operator[] ( size_t index)
 
 	if (typeid(cont_m) == typeid(vector<T*>)) //vector has already implemented the [] operator so we can use it
 	{
-		//vector<T*, allocator<T*>> *temp = reinterpret_cast <vector<T*, allocator<T*>> * >(&cont_m);
 		vector<T*, allocator<T*>> *temp = (vector<T*, allocator<T*>> *)(&cont_m);
 		return  (*temp)[index]; 
 	}
-	//else if (typeid(cont_m) == typeid(list<T*>))
 	else
 	{
-		//tContainer_t<T, CT>::iter_t it = cont_m.begin();
 		iter_t it = cont_m.begin();
 		advance(it, index);
 		return *it;
 		
 	}
-	//return NULL;
 }
 
 
 
-prefix_function  T *   tContainer_t<T, CT>::operator[] ( size_t index) const
+PREFIX_TEMPLATE  T *   tContainer_t<T, CT>::operator[] ( size_t index) const
 {
 	if (index >= cont_m.size())
 	{
@@ -233,14 +222,11 @@ prefix_function  T *   tContainer_t<T, CT>::operator[] ( size_t index) const
 
 	if (typeid(cont_m) == typeid(vector<T*>)) //vector has already implemented the [] operator so we can use it
 	{
-	//	vector<T*, allocator<T*>> *temp = reinterpret_cast <vector<T*, allocator<T*>> * >(&cont_m);
 		vector<T*, allocator<T*>> *temp = (vector<T*, allocator<T*>> *)(&cont_m);
-		return  (*temp)[index]; // ??????????? reference
+		return  (*temp)[index]; 
 	}
-	//else if (typeid(cont_m) == typeid(list<T*>))
 	else //list - YOSSI told us that there only 2 options - list or vector!
 	{
-		//tContainer_t<T, CT>::iter_t it = cont_m.begin();
 		const_iter_t it = cont_m.begin();
 		advance(it, index);
 		return *it;
@@ -250,7 +236,7 @@ prefix_function  T *   tContainer_t<T, CT>::operator[] ( size_t index) const
 
 
 
-prefix_function ostream&  operator<<(ostream& os, const tContainer_t<T, CT> & cont)
+PREFIX_TEMPLATE ostream&  operator<<(ostream& os, const tContainer_t<T, CT> & cont)
 {
 	tContainer_t<T, CT>::const_iter_t it;
 	for (it = cont.cont_m.begin(); it != cont.cont_m.end(); it++)
@@ -262,21 +248,6 @@ prefix_function ostream&  operator<<(ostream& os, const tContainer_t<T, CT> & co
 
 
 
-
-
-// wil be used as the predicat for the find_if
-//functor ==> not taught in class - saw it in stackoverflow.com/questions/13525361/can-you-pass-an-additional-parameter-to-a-predicate
-
-template <class T> struct compare
-{
-	compare(const T &val) : first_val(val){}; //default constructor = used to retreive the first element to compare with
-
-	bool operator()(const T* second_val) const { return *second_val == first_val; } //we assume the T class has implemented the correct == operator
-
-
-private:
-	const T &first_val;
-};
 
 
 
