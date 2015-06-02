@@ -68,3 +68,34 @@ void cTime_t::print(int format)
 
 
 
+cTime_t cTime_t::operator+(const cTime_t & time)
+{
+	cTime_t result;
+
+	result.seconds_m = time.seconds_m + this->seconds_m;
+	if (!is_valid_seconds(result.seconds_m))
+	{
+		result.seconds_m -= 60;
+		result.minutes_m += 1;
+	}
+
+	result.minutes_m = time.minutes_m + this->minutes_m;
+	if (!is_valid_minutes(result.minutes_m))
+	{
+		result.minutes_m -= 60;
+		result.hour_m += 1;
+	}
+
+	result.hour_m = time.hour_m  +this->hour_m;
+	if (!is_valid_hour(result.hour_m))
+	{
+		result.hour_m -= 24;
+		// letting the day attached know about the increase in the day..
+		Notify();
+	}
+	return result;
+
+}
+
+
+

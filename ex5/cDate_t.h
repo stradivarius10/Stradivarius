@@ -4,10 +4,13 @@
 #include <time.h>
 #include <string>
 #include <iostream>
+#include "Observer.h"
 
 using namespace std;
 
-class cDate_t
+class cTime_t; //forward reference
+
+class cDate_t : public Observer
 {
 public:
 	virtual ~cDate_t();
@@ -29,17 +32,22 @@ public:
     string getNameOfMonth() const;
 
 	void print(int format); //format can be 1, 2 or 3
+	virtual void  Update(Subject* ChngSubject);
+	virtual void  connect_with_time(Subject *);
 
 protected:
 	void  get_data(struct tm * timeinfo) const;
+	Subject* sbj;
+
 
 private:
 	size_t day_m;
 	size_t month_m;
 	size_t year_m;
 
-	inline static bool is_valid_day_month_year(size_t day, size_t month, size_t year); //ask!!!!!!!!!!!!!!!!!!!!
 
+
+	static bool is_valid_day_month_year(size_t day, size_t month, size_t year); 
 
 };
 
@@ -103,35 +111,8 @@ inline bool cDate_t::isYearLeap() const
 	return ( (year_m % 4) == 0) && ( (year_m % 400) == 0);
 }
 
-inline bool cDate_t::is_valid_day_month_year(size_t day, size_t month, size_t year)
-{
-	if (day > 31)
-	{
-		return false;
-	}
-	if (month < 1 || month >12)
-	{
-		return false;
-	}
-	if (year < 1900) // YOSSI AGREED IN THE FORUM
-	{
-		return false;
-	}
-	if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30)
-	{
-		return false;
-	}
-	if (month == 2)
-	{
-		if (day > 29)
-			return false;
-		if (!(((year % 4) == 0) && ((year % 400) == 0)) && (day == 29)) //  only not in leap year day 29 is valid
-			return false; 
-	}
-	
-	return true;
 
-}
+
 
 
 

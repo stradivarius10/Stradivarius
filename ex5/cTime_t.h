@@ -4,10 +4,11 @@
 #include <time.h>
 #include <string>
 #include <iostream>
+#include "Observer.h"
 
 using namespace std;
 
-class cTime_t
+class cTime_t :public Subject
 {
 public:
 	virtual ~cTime_t();
@@ -23,6 +24,8 @@ public:
 	inline size_t getSeconds() const;
 
 	void print(int format); //format can be 1 or 2
+
+	cTime_t operator+(const cTime_t & time); //why not refernce?????
 
 
 private:
@@ -60,7 +63,7 @@ inline void cTime_t::setMinutes(size_t minutes)
 	}
 	else
 	{
-		throw exception("Invalid minutes. Hour has to be 0-59");
+		throw exception("Invalid minutes. Minutes has to be 0-59");
 	}
 }
 inline void cTime_t::setSeconds(size_t seconds)
@@ -71,7 +74,7 @@ inline void cTime_t::setSeconds(size_t seconds)
 	}
 	else
 	{
-		throw exception("Invalid seconds. Hour has to be 0-59");
+		throw exception("Invalid seconds. Seconds has to be 0-59");
 	}
 
 }
