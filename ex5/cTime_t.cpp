@@ -1,13 +1,15 @@
 #include "cTime_t.h"
 
 
+cTime_t::~cTime_t(){}
+
 cTime_t::cTime_t()
 {
-	time_t 	time_date;
+	time_t 	time_of_date;
 	struct tm* 	current_time;
 
-	time_date = time(0);	// current time in seconds
-	current_time = localtime(&time_date);
+	time_of_date = time(0);	// current time in seconds
+	current_time = localtime(&time_of_date);
 
 	hour_m = current_time->tm_hour;
 	minutes_m = current_time->tm_min;
