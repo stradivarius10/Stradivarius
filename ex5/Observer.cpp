@@ -1,5 +1,7 @@
 #include "Observer.h"
 
+/* This code is a copy of the code we saw in class. YOSSI approved to use it as is!*/
+
 //================================================================================
 // Subject Implemenation
 //================================================================================
@@ -14,12 +16,12 @@ void Subject::Detach(Observer* ob) {
 	{
 		if (m_observers[i] == ob) break;
 	}
-		
+
 	if (i != m_observers.size())
 	{
 		m_observers.erase(m_observers.begin() + i);
 	}
-	
+
 }
 
 void Subject::Notify() {

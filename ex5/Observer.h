@@ -1,6 +1,9 @@
 #ifndef OBSERVER
 #define OBSERVER
 
+
+/* This code is a copy of the code we saw in class. YOSSI approved to use it as is!*/
+
 #include <vector>
 using namespace std;
 class Subject;

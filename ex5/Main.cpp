@@ -63,9 +63,7 @@ static size_t getSeconds()
 
 static void initDate(cDate_t & date)
 {
-	date.setDay(getDay());
-	date.setMonth(getMonth());
-	date.setYear(getYear());
+	date.setDayMonthYear(getDay(), getMonth(), getYear());
 }
 
 static void initTime(cTime_t & time)
@@ -175,7 +173,7 @@ static void handleTime(cTime_t & time)
 		<< "Press 5 to get minutes" << endl
 		<< "Press 6 to get seconds" << endl
 		<< "press p to print time" << endl
-		<< "Press + to add another time to this time" <<endl
+		<< "Press + to add another time to this time" << endl
 		<< "press any other character to return previous menu" << endl;
 
 	cin >> c;
@@ -226,7 +224,7 @@ static void handleTime(cTime_t & time)
 	{
 		cout << ex.what() << endl;
 	}
-	
+
 
 }
 
