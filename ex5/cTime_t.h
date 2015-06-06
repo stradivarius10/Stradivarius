@@ -29,9 +29,14 @@ public:
 	virtual void print(int format); // got approve form Yossi to use it as paramater
 
 	// will notify the observers if the time exceeded a day.
+	//Yossi wrote in the forum that we need to overwrite + operator and not +=.
 	cTime_t operator+(const cTime_t & time);
 
-
+protected:
+	// got approve from Yossi to use them as static
+	inline static bool is_valid_hour(size_t hour);
+	inline static bool is_valid_minutes(size_t minutes);
+	inline static bool is_valid_seconds(size_t seconds);
 
 
 private:
@@ -39,10 +44,6 @@ private:
 	size_t minutes_m;
 	size_t seconds_m;
 
-	// got approve from Yossi to use them as static
-	inline static bool is_valid_hour(size_t hour);
-	inline static bool is_valid_minutes(size_t minutes);
-	inline static bool is_valid_seconds(size_t seconds); 
 };
 
 
