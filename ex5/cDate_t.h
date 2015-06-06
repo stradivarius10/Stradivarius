@@ -43,7 +43,7 @@ public:
 	inline size_t getYear() const;
     inline size_t getDayOfMonth() const;
 
-	virtual void  print(int format);// got apprvoce form Yossi to use it as paramater
+	virtual void  print(int format);// got approved form Yossi to use it as paramater
 	virtual void  Update(Subject* ChngSubject);
 	virtual void  connect_with_time(cTime_t *);
 	virtual void  disconnect_from_time(cTime_t *);
