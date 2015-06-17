@@ -29,7 +29,7 @@ Mobile_phone::~Mobile_phone()
 }
 
 
-string Mobile_phone::who_am_i()
+string Mobile_phone::who_am_i() const
 {
 	return "Mobile";
 }

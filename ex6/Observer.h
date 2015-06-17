@@ -12,11 +12,10 @@ class Observer {
 public:
 	virtual			~Observer() {}
 	virtual void	Update(Subject* ChngSubject) = 0;
-	virtual string  who_am_i() = 0;
+	virtual string  who_am_i() const = 0;
 protected:
 	Observer() {}
 
-	//////// check with denis
 };
 
 

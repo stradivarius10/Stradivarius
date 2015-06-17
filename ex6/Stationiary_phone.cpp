@@ -24,7 +24,7 @@ Stationiary_phone::~Stationiary_phone()
 }
 
 
-string Stationiary_phone::who_am_i()
+string Stationiary_phone::who_am_i() const
 {
 	return "Stationiary";
 }

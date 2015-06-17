@@ -16,7 +16,7 @@ public:
 	Mobile_phone(const Mobile_phone &phone);
 	Mobile_phone & operator=(const Mobile_phone &phone);
 	virtual void	Update(Subject* ChngSubject);
-	virtual string  who_am_i();
+	virtual string  who_am_i() const;
 
 
 };

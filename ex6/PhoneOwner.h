@@ -15,8 +15,8 @@ public:
 	PhoneOwner(const string &impl, TC_t *tc);
 
 	virtual void	Update(Subject* ChngSubject);
-	virtual size_t  get_service_price();
-	virtual string  who_am_i() ; //agreed by yossi in order to prevent double vector in the observer design pattern.
+	virtual size_t  get_service_price() const;
+	virtual string  who_am_i() const ; //agreed by yossi in order to prevent double vector in the observer design pattern.
 
 private:
 	PhoneOwner_implementation * impl;

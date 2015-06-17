@@ -13,8 +13,8 @@ class PhoneOwner_implementation : public Observer
 
 public:
 	virtual void Update(Subject* ChngSubject) = 0;
-	inline size_t  get_service_price(){ return service_price;}
-	virtual string  who_am_i() = 0;
+	inline size_t  get_service_price() const { return service_price;}
+	virtual string  who_am_i() const = 0;
 
 protected:
 	TC_t * sbj;

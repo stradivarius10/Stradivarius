@@ -13,7 +13,7 @@ public:
 	Stationiary_phone & operator=(const Stationiary_phone &phone);
 
 	virtual void	Update(Subject* ChngSubject);
-	virtual string  who_am_i();
+	virtual string  who_am_i() const;
 };
 
 #endif

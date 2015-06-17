@@ -28,7 +28,7 @@ void Subject::Detach(Observer* ob) {
 }
 
 
-void Subject::Notify(string who) 
+void Subject::Notify(string who)  
 {
 	for (size_t i = 0; i < m_observers.size(); i++)
 	{
